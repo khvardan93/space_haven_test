@@ -1,0 +1,17 @@
+{
+    "name": "Project.View",
+    "rootNamespace": "Project.View",
+    "references": [
+        "Project.Model",
+        "Project.Services"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
