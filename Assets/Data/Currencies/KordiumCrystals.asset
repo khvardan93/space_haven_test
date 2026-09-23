@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc527e38d905b104c969d34b7153ebf0, type: 3}
+  m_Name: KordiumCrystals
+  m_EditorClassIdentifier: Project.Model::Model.ResourceDefinition
+  _id: res_kordium
+  _displayName: KordiumCrystals
+  _icon: {fileID: -8154582369907284151, guid: 405e4b7a5adf3d44f997642d66f6ef98, type: 3}
+  _color: {r: 0.36078432, g: 1, b: 0.5411765, a: 1}
+  _description: 

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc527e38d905b104c969d34b7153ebf0, type: 3}
+  m_Name: DarkMatter
+  m_EditorClassIdentifier: Project.Model::Model.ResourceDefinition
+  _id: res_dark_matter
+  _displayName: DarkMatter
+  _icon: {fileID: -5161320436961555162, guid: 20f6eef1bfd7c7948a43a9de998891b0, type: 3}
+  _color: {r: 0.48235294, g: 0.3019608, b: 1, a: 1}
+  _description: 

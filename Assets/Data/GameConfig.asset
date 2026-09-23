@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d1d3208eab58c349a3a3ecde9705b2f, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: Project.Model::Model.GameConfig
+  _resources:
+  - {fileID: 11400000, guid: 50066573f18b67f4793f8107177e276f, type: 2}
+  - {fileID: 11400000, guid: d4033e66e660b1448a431017ac7527bc, type: 2}
+  - {fileID: 11400000, guid: bff3dcc80930c8f48824248eb845b923, type: 2}
+  _rooms:
+  - {fileID: 11400000, guid: 6893429f0e9062249a2ed225c76b1039, type: 2}
+  - {fileID: 11400000, guid: f2ba4649aa4c5fb4cbbb364c7c1f81e3, type: 2}
+  - {fileID: 11400000, guid: c1a682c87c71cfd449d85d0790cb3fc2, type: 2}
+  _gridSize: {x: 0, y: 0}
+  _cellSize: 0
+  _startingBalances:
+  - _resource: {fileID: 11400000, guid: 50066573f18b67f4793f8107177e276f, type: 2}
+    _amount: 50
+  - _resource: {fileID: 11400000, guid: d4033e66e660b1448a431017ac7527bc, type: 2}
+    _amount: 0
+  - _resource: {fileID: 11400000, guid: bff3dcc80930c8f48824248eb845b923, type: 2}
+    _amount: 0
+  _laserSettings:
+    _laserMax: 20
+    _laserStart: 20
+    _laserRegenSeconds: 30
+    _boostCost: 2
+    _boostDuration: 30
+    _boostMultiplier: 3

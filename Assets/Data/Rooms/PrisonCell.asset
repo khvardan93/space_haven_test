@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3009ef790c215434c96fc82ce299d8f8, type: 3}
+  m_Name: PrisonCell
+  m_EditorClassIdentifier: Project.Model::Model.RoomDefinition
+  _id: prison_cell
+  _displayName: PrisonCell
+  _icon: {fileID: -4610848668492272804, guid: 7ef0fc7939abf2c4ea2c184746cbaf83, type: 3}
+  _cost:
+  - _resource: {fileID: 11400000, guid: 50066573f18b67f4793f8107177e276f, type: 2}
+    _amount: 25
+  _laserCost: 1
+  _inputs: []
+  _outputs:
+  - _resource: {fileID: 11400000, guid: 50066573f18b67f4793f8107177e276f, type: 2}
+    _amount: 2
+  _cycleTime: 2
+  _maxLevel: 10
+  _upgradeBaseCost:
+  - _resource: {fileID: 11400000, guid: 50066573f18b67f4793f8107177e276f, type: 2}
+    _amount: 40
+  - _resource: {fileID: 11400000, guid: bff3dcc80930c8f48824248eb845b923, type: 2}
+    _amount: 1
+  _upgradeCostGrowth: 1.6
+  _outputGrowthPerLevel: 0.5
+  _laserUpgradeCost: 1
