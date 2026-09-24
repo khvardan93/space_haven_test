@@ -49,7 +49,7 @@ namespace Prison
         /// <summary>Output per second at the current level, ignoring boost and starvation.</summary>
         public double GetBaseRate(ResourceType type)
         {
-            double total = 0;
+            var total = 0d;
             foreach (var output in _currentOutputs)
             {
                 if (output.Type == type)
@@ -81,7 +81,7 @@ namespace Prison
 
             Progress += EffectiveTime(dt);
 
-            int cycles = 0;
+            var cycles = 0;
             while (Progress >= Spec.CycleTime - TimeEpsilon && cycles < MaxCyclesPerTick)
             {
                 if (Spec.Inputs.Count > 0)
@@ -142,7 +142,7 @@ namespace Prison
             if (!IsBoosted)
                 return dt;
 
-            double boosted = Math.Min(dt, BoostRemaining);
+            var boosted = Math.Min(dt, BoostRemaining);
             BoostRemaining -= boosted;
 
             if (BoostRemaining <= 0)

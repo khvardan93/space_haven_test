@@ -117,7 +117,7 @@ namespace Configs
             if (currentLevel < 1)
                 throw new ArgumentOutOfRangeException(nameof(currentLevel));
 
-            double factor = Math.Pow(UpgradeCostGrowth, currentLevel - 1);
+            var factor = Math.Pow(UpgradeCostGrowth, currentLevel - 1);
             return Resource.Scale(UpgradeBaseCost, factor);
         }
         
@@ -132,7 +132,7 @@ namespace Configs
         public List<string> Validate()
         {
             var errors = new List<string>();
-            string label = string.IsNullOrEmpty(Id) ? "<no id>" : Id;
+            var label = string.IsNullOrEmpty(Id) ? "<no id>" : Id;
 
             if (string.IsNullOrWhiteSpace(Id)) errors.Add("Room has no Id.");
             if (_cycleTime <= 0) errors.Add(label + ": CycleSeconds must be > 0.");

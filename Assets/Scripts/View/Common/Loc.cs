@@ -55,8 +55,7 @@ namespace View
 
         public static string Get(string key)
         {
-            string value;
-            if (key != null && English.TryGetValue(key, out value))
+            if (key != null && English.TryGetValue(key, out var value))
                 return value;
             return key ?? string.Empty;
         }

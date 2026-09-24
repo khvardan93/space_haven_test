@@ -21,16 +21,16 @@ namespace View
 
             if (cost != null)
             {
-                for (int i = 0; i < cost.Count; i++)
+                for (var i = 0; i < cost.Count; i++)
                 {
-                    bool affordable = economy.Get(cost[i].Type) + 1e-9 >= cost[i].Amount;
+                    var affordable = economy.Get(cost[i].Type) + 1e-9 >= cost[i].Amount;
                     AppendAmount(cost[i], context, affordable ? null : MissingColor);
                 }
             }
 
             if (laserCost > 0)
             {
-                bool affordable = context.Model.Laser.CanSpend(laserCost);
+                var affordable = context.Model.Laser.CanSpend(laserCost);
                 Separator();
                 Builder.Append("<color=").Append(affordable ? LaserColor : MissingColor).Append('>')
                        .Append(laserCost).Append(' ').Append(Loc.Get("laser_energy_short")).Append("</color>");
@@ -46,7 +46,7 @@ namespace View
 
             if (spec.Inputs.Count > 0)
             {
-                for (int i = 0; i < spec.Inputs.Count; i++)
+                for (var i = 0; i < spec.Inputs.Count; i++)
                 {
                     if (i > 0) Builder.Append(" + ");
                     AppendAmount(spec.Inputs[i], context, null, false);
@@ -54,7 +54,7 @@ namespace View
                 Builder.Append("  >  ");
             }
 
-            for (int i = 0; i < outputs.Count; i++)
+            for (var i = 0; i < outputs.Count; i++)
             {
                 if (i > 0) Builder.Append(" + ");
                 AppendAmount(outputs[i], context, null, false);
@@ -73,7 +73,7 @@ namespace View
         {
             if (separate) Separator();
 
-            string color = overrideColor ?? Hex(context.Content.GetColor(amount.Type));
+            var color = overrideColor ?? Hex(context.Content.GetColor(amount.Type));
             Builder.Append("<color=").Append(color).Append('>')
                    .Append(NumberFormat.Short(amount.Amount)).Append(' ')
                    .Append(context.Content.GetShortName(amount.Type))

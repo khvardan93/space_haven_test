@@ -24,7 +24,7 @@ namespace Configs
                 return new Resource[0];
 
             var result = new Resource[source.Length];
-            for (int i = 0; i < source.Length; i++)
+            for (var i = 0; i < source.Length; i++)
                 result[i] = source[i].ToModel();
             return result;
         }

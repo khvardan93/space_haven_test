@@ -67,10 +67,10 @@ namespace Simulation
             ComputeInstant();
 
             // First sample: jump straight to the value instead of easing in from 0.
-            double alpha = _hasSample ? 1 - Math.Exp(-dt / _smoothingSeconds) : 1;
+            var alpha = _hasSample ? 1 - Math.Exp(-dt / _smoothingSeconds) : 1;
             _hasSample = true;
 
-            for (int i = 0; i < ResourceTypes.Count; i++)
+            for (var i = 0; i < ResourceTypes.Count; i++)
             {
                 _production[i] += (_instantProduction[i] - _production[i]) * alpha;
                 _consumption[i] += (_instantConsumption[i] - _consumption[i]) * alpha;
@@ -91,20 +91,20 @@ namespace Simulation
             Array.Clear(_instantConsumption, 0, _instantConsumption.Length);
 
             var rooms = _prison.Rooms;
-            for (int r = 0; r < rooms.Count; r++)
+            for (var r = 0; r < rooms.Count; r++)
             {
                 var room = rooms[r];
                 if (room.IsStarved)
                     continue;
 
-                double cyclesPerSecond = (room.IsBoosted ? room.BoostMultiplier : 1) / room.Spec.CycleTime;
+                var cyclesPerSecond = (room.IsBoosted ? room.BoostMultiplier : 1) / room.Spec.CycleTime;
 
                 var outputs = room.CurrentOutputs;
-                for (int i = 0; i < outputs.Count; i++)
+                for (var i = 0; i < outputs.Count; i++)
                     _instantProduction[(int)outputs[i].Type] += outputs[i].Amount * cyclesPerSecond;
 
                 var inputs = room.Spec.Inputs;
-                for (int i = 0; i < inputs.Count; i++)
+                for (var i = 0; i < inputs.Count; i++)
                     _instantConsumption[(int)inputs[i].Type] += inputs[i].Amount * cyclesPerSecond;
             }
         }

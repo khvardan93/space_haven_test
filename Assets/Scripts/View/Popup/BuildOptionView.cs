@@ -48,7 +48,7 @@ namespace View
         public void Refresh(int slot)
         {
             var result = _context.Model.Prison.CanBuild(slot, _spec);
-            bool available = result == ActionResult.Ok;
+            var available = result == ActionResult.Ok;
 
             _button.interactable = available;
             if (_canvasGroup != null)

@@ -61,7 +61,7 @@ namespace Simulation
 
             _accumulator += realDeltaTime * _timeScale;
 
-            int steps = 0;
+            var steps = 0;
             while (_accumulator >= FixedStep - TimeEpsilon && steps < MaxStepsPerUpdate)
             {
                 Step(FixedStep);
@@ -82,7 +82,7 @@ namespace Simulation
             if (step <= 0)
                 throw new ArgumentOutOfRangeException(nameof(step));
 
-            double remaining = seconds;
+            var remaining = seconds;
             while (remaining >= step - TimeEpsilon)
             {
                 Step(step);
@@ -97,7 +97,7 @@ namespace Simulation
             _laser.Tick(dt);
 
             var rooms = _prison.Rooms;
-            for (int i = 0; i < rooms.Count; i++)
+            for (var i = 0; i < rooms.Count; i++)
                 rooms[i].Tick(dt, _economy);
 
             SimulatedTime += dt;

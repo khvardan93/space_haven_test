@@ -17,12 +17,12 @@ namespace View
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 
-            for (int i = _slotContainer.childCount - 1; i >= 0; i--)
+            for (var i = _slotContainer.childCount - 1; i >= 0; i--)
                 Destroy(_slotContainer.GetChild(i).gameObject);
             _slots.Clear();
 
-            int count = context.Model.Prison.SlotCount;
-            for (int slot = 0; slot < count; slot++)
+            var count = context.Model.Prison.SlotCount;
+            for (var slot = 0; slot < count; slot++)
             {
                 var view = Instantiate(_slotPrefab, _slotContainer);
                 view.gameObject.SetActive(true);

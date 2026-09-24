@@ -82,22 +82,22 @@ namespace Offline
             if (simulation == null) throw new ArgumentNullException(nameof(simulation));
             if (economy == null) throw new ArgumentNullException(nameof(economy));
 
-            TimeSpan elapsed = _time.UtcNow - lastSaveUtc;
+            var elapsed = _time.UtcNow - lastSaveUtc;
 
             // Clock moved backwards (manual change or timezone bug): grant nothing.
             if (elapsed <= TimeSpan.Zero)
                 return OfflineReport.Empty;
 
-            bool capped = elapsed > _cap;
+            var capped = elapsed > _cap;
             if (capped)
                 elapsed = _cap;
 
-            double[] before = economy.Snapshot();
+            var before = economy.Snapshot();
             simulation.Advance(elapsed.TotalSeconds, _step);
-            double[] after = economy.Snapshot();
+            var after = economy.Snapshot();
 
             var net = new double[ResourceTypes.Count];
-            for (int i = 0; i < net.Length; i++)
+            for (var i = 0; i < net.Length; i++)
                 net[i] = after[i] - before[i];
 
             return new OfflineReport(elapsed, capped, net);

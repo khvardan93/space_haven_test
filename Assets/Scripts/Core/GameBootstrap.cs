@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Configs;
 using Offline;
 using Save;
-using View;
 using UnityEngine;
+using View;
 
 namespace Core
 {
@@ -23,6 +23,10 @@ namespace Core
         [Header("Views")]
         [SerializeField] private PrisonView _prisonView;
         [SerializeField] private RoomActionPopup _actionPopup;
+        [SerializeField] private HudView _hud;
+        [SerializeField] private EconomyPanelView _economyPanel;
+        [SerializeField] private OfflinePopupView _offlinePopup;
+        [SerializeField] private TimeScaleView _timeScale;
 
         [Header("Saving")]
         [SerializeField] private bool _useSave = true;
@@ -39,15 +43,12 @@ namespace Core
         private DateTime _pausedAtUtc;
         private bool _paused;
 
-        public GameContext Context
-        {
-            get { return _context; }
-        }
+        public GameContext Context => _context; 
 
         /// <summary>Last offline catch-up result (launch or return from background). Null when nothing was applied.</summary>
         public OfflineReport LastOfflineReport { get; private set; }
 
-        /// <summary>Raised when time away was converted into resources. Phase 7 shows the welcome-back popup from this.</summary>
+        /// <summary>Raised after time away was converted into resources and the welcome-back popup was shown.</summary>
         public event Action<OfflineReport> OfflineEarningsApplied;
 
         private void Awake()
@@ -66,11 +67,9 @@ namespace Core
             _storage = new JsonSaveStorage(SaveFileName);
             _offline = new OfflineEarnings(new SystemTimeProvider(), setup.OfflineCap);
 
-            GameState state;
-            if (_useSave && _storage.TryLoad(out state))
+            if (_useSave && _storage.TryLoad(out var state))
             {
-                List<string> warnings;
-                _model = GameModel.FromSave(setup, state, out warnings);
+                _model = GameModel.FromSave(setup, state, out var warnings);
                 foreach (var warning in warnings)
                     Debug.LogWarning("[Save] " + warning);
 
@@ -83,9 +82,17 @@ namespace Core
 
             _context = new GameContext(_model, new ContentLookup(_config));
 
+            // Panel before HUD: the HUD button toggles the panel.
+            _economyPanel.Init(_context);
+            _hud.Init(_context);
             _actionPopup.Init(_context);
+            _offlinePopup.Init(_context);
             _prisonView.Init(_context);
             _prisonView.SlotClicked += _actionPopup.Open;
+
+            // Optional: remove the speed toggle object from the scene for a "release" build.
+            if (_timeScale != null)
+                _timeScale.Init(_context);
         }
 
         private void Start()
@@ -156,13 +163,6 @@ namespace Core
             _storage.Save(SaveMapper.Capture(_model, DateTime.UtcNow));
         }
 
-        /// <summary>Demo helper for the x1 / x5 buttons (wired in Phase 7).</summary>
-        public void SetTimeScale(float scale)
-        {
-            if (_model != null)
-                _model.Simulation.TimeScale = scale;
-        }
-
         [ContextMenu("Delete Save")]
         private void DeleteSave()
         {
@@ -174,6 +174,11 @@ namespace Core
         private void RaiseOfflineApplied(OfflineReport report)
         {
             Debug.Log("[Offline] " + NumberFormat.Duration(report.Elapsed.TotalSeconds) + (report.WasCapped ? " (capped)" : ""));
+
+            _actionPopup.Close();
+            _economyPanel.Close();
+            _offlinePopup.Show(report);
+
             var handler = OfflineEarningsApplied;
             if (handler != null) handler(report);
         }

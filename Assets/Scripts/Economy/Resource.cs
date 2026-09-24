@@ -30,7 +30,7 @@ namespace Economy
         public static Resource[] Scale(IReadOnlyList<Resource> source, double multiplier)
         {
             var result = new Resource[source.Count];
-            for (int i = 0; i < source.Count; i++)
+            for (var i = 0; i < source.Count; i++)
                 result[i] = source[i].Scaled(multiplier);
             return result;
         }

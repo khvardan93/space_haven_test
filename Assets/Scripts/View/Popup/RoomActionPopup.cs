@@ -107,7 +107,7 @@ namespace View
 
         private void CreateBuildOptions()
         {
-            for (int i = _optionContainer.childCount - 1; i >= 0; i--)
+            for (var i = _optionContainer.childCount - 1; i >= 0; i--)
                 Destroy(_optionContainer.GetChild(i).gameObject);
 
             foreach (var spec in _context.Model.Catalog.All)

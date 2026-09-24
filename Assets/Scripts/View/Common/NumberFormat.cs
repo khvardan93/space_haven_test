@@ -14,10 +14,10 @@ namespace View
             if (double.IsNaN(value) || double.IsInfinity(value))
                 return "0";
 
-            bool negative = value < 0;
+            var negative = value < 0;
             value = Math.Abs(value);
 
-            int tier = 0;
+            var tier = 0;
             while (value >= 1000 && tier < Suffixes.Length - 1)
             {
                 value /= 1000;
@@ -43,9 +43,9 @@ namespace View
             if (Math.Abs(perSecond) < 0.005)
                 return "0/s";
 
-            string sign = perSecond > 0 ? "+" : "-";
-            double abs = Math.Abs(perSecond);
-            string number = abs < 10 ? abs.ToString("0.0#", Culture)
+            var sign = perSecond > 0 ? "+" : "-";
+            var abs = Math.Abs(perSecond);
+            var number = abs < 10 ? abs.ToString("0.0#", Culture)
                           : abs < 1000 ? abs.ToString("0.#", Culture)
                           : Short(abs);
             return sign + number + "/s";

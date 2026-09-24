@@ -42,8 +42,7 @@ namespace Prison
 
         public RoomConfigs Get(string id)
         {
-            RoomConfigs spec;
-            if (!TryGet(id, out spec))
+            if (!TryGet(id, out var spec))
                 throw new KeyNotFoundException("Unknown room id: " + id);
             return spec;
         }

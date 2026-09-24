@@ -59,7 +59,7 @@ namespace Laser
             }
 
             _timer += dt;
-            int gained = 0;
+            var gained = 0;
             while (_timer >= _spec.RegenSeconds - 1e-9 && !IsFull)
             {
                 _timer = Math.Max(0, _timer - _spec.RegenSeconds);

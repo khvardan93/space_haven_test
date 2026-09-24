@@ -14,7 +14,7 @@ namespace Save
             if (model == null) throw new ArgumentNullException(nameof(model));
 
             var rooms = new List<RoomState>();
-            for (int slot = 0; slot < model.Prison.SlotCount; slot++)
+            for (var slot = 0; slot < model.Prison.SlotCount; slot++)
             {
                 var room = model.Prison.GetRoom(slot);
                 if (room == null)

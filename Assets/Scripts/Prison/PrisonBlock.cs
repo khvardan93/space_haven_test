@@ -56,7 +56,7 @@ namespace Prison
 
         public int CountOf(string specId)
         {
-            int count = 0;
+            var count = 0;
             foreach (var room in _rooms)
             {
                 if (room.Spec.Id == specId)

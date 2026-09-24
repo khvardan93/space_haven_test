@@ -35,13 +35,13 @@ namespace Economy
 
         public void Add(IReadOnlyList<ResourceAmount> amounts)
         {
-            for (int i = 0; i < amounts.Count; i++)
+            for (var i = 0; i < amounts.Count; i++)
                 Add(amounts[i].Resource.Type, amounts[i].Amount);
         }
         
         public void Add(IReadOnlyList<Resource> amounts)
         {
-            for (int i = 0; i < amounts.Count; i++)
+            for (var i = 0; i < amounts.Count; i++)
                 Add(amounts[i].Type, amounts[i].Amount);
         }
 
@@ -51,7 +51,7 @@ namespace Economy
                 return true;
 
             SumByType(cost);
-            for (int i = 0; i < _scratch.Length; i++)
+            for (var i = 0; i < _scratch.Length; i++)
             {
                 if (_scratch[i] > _balances[i] + Epsilon)
                     return false;
@@ -67,7 +67,7 @@ namespace Economy
                 return true;
 
             // _scratch still holds the per-type totals computed by CanAfford.
-            for (int i = 0; i < _scratch.Length; i++)
+            for (var i = 0; i < _scratch.Length; i++)
             {
                 if (_scratch[i] <= 0)
                     continue;
@@ -86,9 +86,9 @@ namespace Economy
         /// <summary>Replaces all balances, used when loading a save. Missing entries become 0.</summary>
         public void SetAll(IReadOnlyList<double> balances)
         {
-            for (int i = 0; i < _balances.Length; i++)
+            for (var i = 0; i < _balances.Length; i++)
             {
-                double value = balances != null && i < balances.Count ? balances[i] : 0;
+                var value = balances != null && i < balances.Count ? balances[i] : 0;
                 _balances[i] = double.IsNaN(value) || value < 0 ? 0 : value;
                 RaiseChanged((ResourceType)i);
             }
@@ -97,7 +97,7 @@ namespace Economy
         private void SumByType(IReadOnlyList<Resource> cost)
         {
             Array.Clear(_scratch, 0, _scratch.Length);
-            for (int i = 0; i < cost.Count; i++)
+            for (var i = 0; i < cost.Count; i++)
                 _scratch[(int)cost[i].Type] += cost[i].Amount;
         }
 

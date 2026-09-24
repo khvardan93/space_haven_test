@@ -73,7 +73,7 @@ namespace View
 
             if (_room.IsBoosted)
             {
-                int seconds = (int)Math.Ceiling(_room.BoostRemaining);
+                var seconds = (int)Math.Ceiling(_room.BoostRemaining);
                 if (seconds != _shownBoostSeconds)
                 {
                     _shownBoostSeconds = seconds;
@@ -122,7 +122,7 @@ namespace View
 
         private void Refresh()
         {
-            bool built = _room != null;
+            var built = _room != null;
             _emptyState.SetActive(!built);
             _builtState.SetActive(built);
 
