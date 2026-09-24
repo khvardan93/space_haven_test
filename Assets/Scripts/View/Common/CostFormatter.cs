@@ -1,0 +1,89 @@
+using System.Collections.Generic;
+using System.Text;
+using Configs;
+using Economy;
+using UnityEngine;
+
+namespace View
+{
+    /// <summary>Builds TMP rich text for costs and outputs, e.g. "150 DM  20 PL  3 LE". Unaffordable parts turn red.</summary>
+    public static class CostFormatter
+    {
+        private const string MissingColor = "#FF5A5A";
+        private const string LaserColor = "#FFC23D";
+
+        private static readonly StringBuilder Builder = new StringBuilder(64);
+
+        public static string Cost(IReadOnlyList<Resource> cost, int laserCost, GameContext context)
+        {
+            Builder.Length = 0;
+            var economy = context.Model.Economy;
+
+            if (cost != null)
+            {
+                for (int i = 0; i < cost.Count; i++)
+                {
+                    bool affordable = economy.Get(cost[i].Type) + 1e-9 >= cost[i].Amount;
+                    AppendAmount(cost[i], context, affordable ? null : MissingColor);
+                }
+            }
+
+            if (laserCost > 0)
+            {
+                bool affordable = context.Model.Laser.CanSpend(laserCost);
+                Separator();
+                Builder.Append("<color=").Append(affordable ? LaserColor : MissingColor).Append('>')
+                       .Append(laserCost).Append(' ').Append(Loc.Get("laser_energy_short")).Append("</color>");
+            }
+
+            return Builder.ToString();
+        }
+
+        /// <summary>"2 DM / 2s" or "5 DM + 2 PL > 1 KC / 5s".</summary>
+        public static string Production(RoomConfigs spec, IReadOnlyList<Resource> outputs, GameContext context)
+        {
+            Builder.Length = 0;
+
+            if (spec.Inputs.Count > 0)
+            {
+                for (int i = 0; i < spec.Inputs.Count; i++)
+                {
+                    if (i > 0) Builder.Append(" + ");
+                    AppendAmount(spec.Inputs[i], context, null, false);
+                }
+                Builder.Append("  >  ");
+            }
+
+            for (int i = 0; i < outputs.Count; i++)
+            {
+                if (i > 0) Builder.Append(" + ");
+                AppendAmount(outputs[i], context, null, false);
+            }
+
+            Builder.Append(" / ").Append(NumberFormat.Duration(spec.CycleTime));
+            return Builder.ToString();
+        }
+
+        public static string Hex(Color color)
+        {
+            return "#" + ColorUtility.ToHtmlStringRGB(color);
+        }
+
+        private static void AppendAmount(Resource amount, GameContext context, string overrideColor, bool separate = true)
+        {
+            if (separate) Separator();
+
+            string color = overrideColor ?? Hex(context.Content.GetColor(amount.Type));
+            Builder.Append("<color=").Append(color).Append('>')
+                   .Append(NumberFormat.Short(amount.Amount)).Append(' ')
+                   .Append(context.Content.GetShortName(amount.Type))
+                   .Append("</color>");
+        }
+
+        private static void Separator()
+        {
+            if (Builder.Length > 0)
+                Builder.Append("   ");
+        }
+    }
+}

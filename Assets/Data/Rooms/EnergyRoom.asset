@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: energy_room
   _displayName: EnergyRoom
   _icon: {fileID: -7213742777133032008, guid: 5afb9181b69328449af3039508a48def, type: 3}
+  _color: {r: 0.2, g: 0.9019608, b: 1, a: 1}
   _cost:
   - _resource: {fileID: 11400000, guid: 50066573f18b67f4793f8107177e276f, type: 2}
     _amount: 60

@@ -11,6 +11,7 @@ namespace Configs
         [SerializeField] private string _id;
         [SerializeField] private string _displayName;
         [SerializeField] private Sprite _icon;
+        [SerializeField] private Color _color;
 
         [Header("Build Cost")]
         [SerializeField] private ResourceAmount[] _cost;
@@ -36,6 +37,7 @@ namespace Configs
         public string Id => _id;
         public string DisplayName => _displayName;
         public Sprite Icon => _icon;
+        public Color Color => _color;
 
         public IReadOnlyList<Resource> BuildCost
         {

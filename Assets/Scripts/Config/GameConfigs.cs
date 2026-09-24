@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core;
 using Economy;
 using UnityEngine;
 
@@ -26,17 +27,20 @@ namespace Configs
     [CreateAssetMenu(fileName = "GameConfig", menuName = "Project/Config/Game Config")]
     public class GameConfigs : ScriptableObject
     {
-        [Header("Content")] [SerializeField] private ResourceConfigs[] _resources;
+        [Header("Content")]
+        [SerializeField] private ResourceConfigs[] _resources;
         [SerializeField] private RoomConfigs[] _rooms;
 
-        [Header("Starting Balances")] [Range(1, 30)] [SerializeField]
-        private int _slotCount = 8;
+        [Header("Starting Balances")]
+        [Range(1, 30)] [SerializeField] private int _slotCount = 8;
 
         [SerializeField] private ResourceAmount[] _startingBalances;
 
-        [Header("Laser")] [SerializeField] private LaserSettings _laserSettings;
+        [Header("Laser")]
+        [SerializeField] private LaserSettings _laserSettings;
 
-        [Header("Offline")] [SerializeField] private float _offlineCapHours = 2f;
+        [Header("Offline")]
+        [SerializeField] private float _offlineCapHours = 2f;
 
         public IReadOnlyList<ResourceConfigs> Resources => _resources;
         public IReadOnlyList<RoomConfigs> Rooms => _rooms;
@@ -48,6 +52,18 @@ namespace Configs
 
         public float OfflineCapHours => _offlineCapHours;
 
+        public GameSetup ToSetup()
+        {
+            return new GameSetup
+            {
+                SlotCount = SlotCount,
+                StartingBalances = ResourceAmount.ToModel(_startingBalances),
+                Laser = LaserSettings,
+                Rooms = Rooms,
+                OfflineCap = TimeSpan.FromHours(OfflineCapHours)
+            };
+        }
+        
         private void OnValidate()
         {
             var seenResourceTypes = new HashSet<ResourceType>();

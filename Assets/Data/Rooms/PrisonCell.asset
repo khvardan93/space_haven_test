@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: prison_cell
   _displayName: PrisonCell
   _icon: {fileID: -4610848668492272804, guid: 7ef0fc7939abf2c4ea2c184746cbaf83, type: 3}
+  _color: {r: 0.48235294, g: 0.3019608, b: 1, a: 1}
   _cost:
   - _resource: {fileID: 11400000, guid: 50066573f18b67f4793f8107177e276f, type: 2}
     _amount: 25
