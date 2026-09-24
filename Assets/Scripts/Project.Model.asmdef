@@ -1,5 +1,5 @@
 {
-    "name": "Project.Model",
+    "name": "Project",
     "rootNamespace": "Project.Model",
     "references": [],
     "includePlatforms": [],

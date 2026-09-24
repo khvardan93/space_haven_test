@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Economy;
 using UnityEngine;
 
-namespace Model
+namespace Configs
 {
     [Serializable]
     public struct LaserSettings
@@ -14,33 +15,31 @@ namespace Model
         [SerializeField] private float _boostDuration;
         [SerializeField] private float _boostMultiplier;
 
-        public int LaserMax => _laserMax;
+        public int Max => _laserMax;
         public int LaserStart => _laserStart;
-        public float LaserRegenSeconds => _laserRegenSeconds;
+        public float RegenSeconds => _laserRegenSeconds;
         public int BoostCost => _boostCost;
         public float BoostDuration => _boostDuration;
         public float BoostMultiplier => _boostMultiplier;
     }
 
     [CreateAssetMenu(fileName = "GameConfig", menuName = "Project/Config/Game Config")]
-    public class GameConfig : ScriptableObject
+    public class GameConfigs : ScriptableObject
     {
-        [Header("Content")] [SerializeField] private ResourceDefinition[] _resources;
-        [SerializeField] private RoomDefinition[] _rooms;
+        [Header("Content")] [SerializeField] private ResourceConfigs[] _resources;
+        [SerializeField] private RoomConfigs[] _rooms;
 
-        [Header("Starting Balances")]
-        [Range(1, 30)] [SerializeField] private int _slotCount = 8;
+        [Header("Starting Balances")] [Range(1, 30)] [SerializeField]
+        private int _slotCount = 8;
 
         [SerializeField] private ResourceAmount[] _startingBalances;
 
-        [Header("Laser")] 
-        [SerializeField] private LaserSettings _laserSettings;
+        [Header("Laser")] [SerializeField] private LaserSettings _laserSettings;
 
-        [Header("Offline")] 
-        [SerializeField] private float _offlineCapHours = 2f;
+        [Header("Offline")] [SerializeField] private float _offlineCapHours = 2f;
 
-        public IReadOnlyList<ResourceDefinition> Resources => _resources;
-        public IReadOnlyList<RoomDefinition> Rooms => _rooms;
+        public IReadOnlyList<ResourceConfigs> Resources => _resources;
+        public IReadOnlyList<RoomConfigs> Rooms => _rooms;
 
         public int SlotCount => _slotCount;
         public IReadOnlyList<ResourceAmount> StartingBalances => _startingBalances;
@@ -51,7 +50,7 @@ namespace Model
 
         private void OnValidate()
         {
-            var seenResourceTypes = new HashSet<string>();
+            var seenResourceTypes = new HashSet<ResourceType>();
             if (_resources != null)
             {
                 foreach (var resource in _resources)
@@ -62,13 +61,14 @@ namespace Model
                         continue;
                     }
 
-                    if (string.IsNullOrEmpty(resource.Id))
+                    if (!seenResourceTypes.Add(resource.Type))
                     {
-                        Debug.LogError($"{name}: resource '{resource.name}' has a missing ResourceType.", this);
+                        Debug.LogError($"{name}: duplicate ResourceType '{resource.Type}' in Resources.", this);
                     }
-                    else if (!seenResourceTypes.Add(resource.Id))
+
+                    foreach (var error in resource.Validate())
                     {
-                        Debug.LogError($"{name}: duplicate ResourceType '{resource.Id}' in Resources.", this);
+                        Debug.LogError($"{name}: {error}", resource);
                     }
                 }
             }
@@ -102,9 +102,10 @@ namespace Model
                 }
             }
 
-            if (_laserSettings.LaserStart > _laserSettings.LaserMax)
+            if (_laserSettings.LaserStart > _laserSettings.Max)
             {
-                Debug.LogError($"{name}: LaserStart ({_laserSettings.LaserStart}) exceeds LaserMax ({_laserSettings.LaserMax}).", this);
+                Debug.LogError(
+                    $"{name}: LaserStart ({_laserSettings.LaserStart}) exceeds LaserMax ({_laserSettings.Max}).", this);
             }
         }
     }

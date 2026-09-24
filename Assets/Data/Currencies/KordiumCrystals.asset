@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc527e38d905b104c969d34b7153ebf0, type: 3}
   m_Name: KordiumCrystals
   m_EditorClassIdentifier: Project.Model::Model.ResourceDefinition
-  _id: res_kordium
+  _type: 2
   _displayName: KordiumCrystals
   _icon: {fileID: -8154582369907284151, guid: 405e4b7a5adf3d44f997642d66f6ef98, type: 3}
   _color: {r: 0.36078432, g: 1, b: 0.5411765, a: 1}

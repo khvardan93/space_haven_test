@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc527e38d905b104c969d34b7153ebf0, type: 3}
   m_Name: GlowingPlasma
   m_EditorClassIdentifier: Project.Model::Model.ResourceDefinition
-  _id: res_glowing_plasma
+  _type: 1
   _displayName: GlowingPlasma
   _icon: {fileID: -2139385383314106635, guid: 9380c9a6d455c074982906057c76f289, type: 3}
   _color: {r: 0.2, g: 0.9019608, b: 1, a: 1}
