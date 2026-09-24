@@ -35,8 +35,7 @@ namespace View
 
             _laserView.Init(context);
 
-            if (_openPanelButton != null && _economyPanel != null)
-                _openPanelButton.onClick.AddListener(_economyPanel.Toggle);
+            _openPanelButton.onClick.AddListener(_economyPanel.Toggle);
 
             _context.Model.Economy.Changed += OnEconomyChanged;
             _context.Model.Rates.Updated += OnRatesUpdated;
@@ -72,8 +71,7 @@ namespace View
 
             _context.Model.Economy.Changed -= OnEconomyChanged;
             _context.Model.Rates.Updated -= OnRatesUpdated;
-            if (_openPanelButton != null && _economyPanel != null)
-                _openPanelButton.onClick.RemoveListener(_economyPanel.Toggle);
+            _openPanelButton.onClick.RemoveListener(_economyPanel.Toggle);
         }
 
         private void OnEconomyChanged(ResourceTypeEnum typeEnum, double value)
@@ -84,6 +82,15 @@ namespace View
         private void OnRatesUpdated()
         {
             _ratesDirty = true;
+        }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_counterPrefab, nameof(_counterPrefab));
+            this.RequireAssigned(_counterContainer, nameof(_counterContainer));
+            this.RequireAssigned(_laserView, nameof(_laserView));
+            this.RequireAssigned(_openPanelButton, nameof(_openPanelButton));
+            this.RequireAssigned(_economyPanel, nameof(_economyPanel));
         }
     }
 }

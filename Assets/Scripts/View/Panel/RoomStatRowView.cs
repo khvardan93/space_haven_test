@@ -71,5 +71,13 @@ namespace SpacePrison.View
             }
             _detailLabel.text = Builder.ToString();
         }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_icon, nameof(_icon));
+            this.RequireAssigned(_nameLabel, nameof(_nameLabel));
+            this.RequireAssigned(_countLabel, nameof(_countLabel));
+            this.RequireAssigned(_detailLabel, nameof(_detailLabel));
+        }
     }
 }

@@ -56,13 +56,6 @@ namespace Core
             Application.targetFrameRate = _targetFrameRate;
             Screen.sleepTimeout = SleepTimeout.SystemSetting;
 
-            if (_config == null)
-            {
-                Debug.LogError("[Bootstrap] GameConfig is not assigned.", this);
-                enabled = false;
-                return;
-            }
-
             var setup = _config.ToSetup();
             _storage = new JsonSaveStorage(SaveFileName);
             _offline = new OfflineEarnings(new SystemTimeProvider(), setup.OfflineCap);
@@ -149,8 +142,7 @@ namespace Core
 
         private void OnDestroy()
         {
-            if (_prisonView != null && _actionPopup != null)
-                _prisonView.SlotClicked -= _actionPopup.Open;
+            _prisonView.SlotClicked -= _actionPopup.Open;
             _model?.Dispose();
         }
 
@@ -179,6 +171,16 @@ namespace Core
             _offlinePopup.Show(report);
 
             OfflineEarningsApplied?.Invoke(report);
+        }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_config, nameof(_config));
+            this.RequireAssigned(_prisonView, nameof(_prisonView));
+            this.RequireAssigned(_actionPopup, nameof(_actionPopup));
+            this.RequireAssigned(_hud, nameof(_hud));
+            this.RequireAssigned(_economyPanel, nameof(_economyPanel));
+            this.RequireAssigned(_offlinePopup, nameof(_offlinePopup));
         }
     }
 }

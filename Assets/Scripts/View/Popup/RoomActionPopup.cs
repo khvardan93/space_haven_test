@@ -241,5 +241,28 @@ namespace View
             if (slot == _slot)
                 _dirty = true;
         }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_root, nameof(_root));
+            this.RequireAssigned(_dimBackground, nameof(_dimBackground));
+            this.RequireAssigned(_closeButton, nameof(_closeButton));
+            this.RequireAssigned(_titleLabel, nameof(_titleLabel));
+            this.RequireAssigned(_messageLabel, nameof(_messageLabel));
+            this.RequireAssigned(_buildPanel, nameof(_buildPanel));
+            this.RequireAssigned(_optionContainer, nameof(_optionContainer));
+            this.RequireAssigned(_optionPrefab, nameof(_optionPrefab));
+            this.RequireAssigned(_roomPanel, nameof(_roomPanel));
+            this.RequireAssigned(_roomIcon, nameof(_roomIcon));
+            this.RequireAssigned(_levelLabel, nameof(_levelLabel));
+            this.RequireAssigned(_currentOutputLabel, nameof(_currentOutputLabel));
+            this.RequireAssigned(_nextOutputLabel, nameof(_nextOutputLabel));
+            this.RequireAssigned(_upgradeCostLabel, nameof(_upgradeCostLabel));
+            this.RequireAssigned(_upgradeButton, nameof(_upgradeButton));
+            this.RequireAssigned(_upgradeButtonLabel, nameof(_upgradeButtonLabel));
+            this.RequireAssigned(_boostButton, nameof(_boostButton));
+            this.RequireAssigned(_boostButtonLabel, nameof(_boostButtonLabel));
+            this.RequireAssigned(_boostCostLabel, nameof(_boostCostLabel));
+        }
     }
 }

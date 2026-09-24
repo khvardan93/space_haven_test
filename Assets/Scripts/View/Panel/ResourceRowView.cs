@@ -42,5 +42,15 @@ namespace View
             _netLabel.text = $"Net {NumberFormat.Rate(net)}";
             _netLabel.color = UiColors.ForRate(net);
         }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_icon, nameof(_icon));
+            this.RequireAssigned(_nameLabel, nameof(_nameLabel));
+            this.RequireAssigned(_balanceLabel, nameof(_balanceLabel));
+            this.RequireAssigned(_productionLabel, nameof(_productionLabel));
+            this.RequireAssigned(_consumptionLabel, nameof(_consumptionLabel));
+            this.RequireAssigned(_netLabel, nameof(_netLabel));
+        }
     }
 }

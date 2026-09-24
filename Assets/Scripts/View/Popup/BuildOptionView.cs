@@ -60,5 +60,14 @@ namespace View
         {
             Selected?.Invoke(Spec);
         }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_button, nameof(_button));
+            this.RequireAssigned(_icon, nameof(_icon));
+            this.RequireAssigned(_nameLabel, nameof(_nameLabel));
+            this.RequireAssigned(_productionLabel, nameof(_productionLabel));
+            this.RequireAssigned(_costLabel, nameof(_costLabel));
+        }
     }
 }

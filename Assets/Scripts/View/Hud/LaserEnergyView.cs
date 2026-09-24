@@ -56,5 +56,12 @@ namespace View
             _valueLabel.text = $"{laser.Current} / {laser.Max}";
             _shownTimerSeconds = -1;
         }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_fill, nameof(_fill));
+            this.RequireAssigned(_valueLabel, nameof(_valueLabel));
+            this.RequireAssigned(_timerLabel, nameof(_timerLabel));
+        }
     }
 }

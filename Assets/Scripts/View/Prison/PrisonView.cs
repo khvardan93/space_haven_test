@@ -51,5 +51,11 @@ namespace View
                     view.Clicked -= OnSlotClicked;
             }
         }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_slotPrefab, nameof(_slotPrefab));
+            this.RequireAssigned(_slotContainer, nameof(_slotContainer));
+        }
     }
 }

@@ -47,5 +47,12 @@ namespace View
             _rateLabel.text = text;
             _rateLabel.color = UiColors.ForRate(perSecond);
         }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_icon, nameof(_icon));
+            this.RequireAssigned(_amountLabel, nameof(_amountLabel));
+            this.RequireAssigned(_rateLabel, nameof(_rateLabel));
+        }
     }
 }

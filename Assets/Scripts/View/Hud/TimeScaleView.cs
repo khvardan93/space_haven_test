@@ -26,8 +26,8 @@ namespace View
 
         private void OnDestroy()
         {
-            if (_normalButton != null) _normalButton.onClick.RemoveListener(SetNormal);
-            if (_fastButton != null) _fastButton.onClick.RemoveListener(SetFast);
+            _normalButton.onClick.RemoveListener(SetNormal);
+            _fastButton.onClick.RemoveListener(SetFast);
         }
 
         private void SetNormal()
@@ -45,6 +45,12 @@ namespace View
             _context.Model.Simulation.TimeScale = scale;
             _normalButton.interactable = scale > 1f;
             _fastButton.interactable = scale <= 1f;
+        }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_normalButton, nameof(_normalButton));
+            this.RequireAssigned(_fastButton, nameof(_fastButton));
         }
     }
 }

@@ -65,8 +65,15 @@ namespace View
 
         private void OnDestroy()
         {
-            if (_collectButton)
-                _collectButton.onClick.RemoveListener(Close);
+            _collectButton.onClick.RemoveListener(Close);
+        }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_root, nameof(_root));
+            this.RequireAssigned(_elapsedLabel, nameof(_elapsedLabel));
+            this.RequireAssigned(_gainsLabel, nameof(_gainsLabel));
+            this.RequireAssigned(_collectButton, nameof(_collectButton));
         }
     }
 }

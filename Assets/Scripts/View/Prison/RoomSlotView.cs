@@ -76,8 +76,7 @@ namespace View
                 _context.Model.Prison.SlotChanged -= OnSlotChanged;
             if (_room != null)
                 _room.StateChanged -= OnRoomStateChanged;
-            if (_button)
-                _button.onClick.RemoveListener(OnClick);
+            _button.onClick.RemoveListener(OnClick);
         }
 
         private void OnClick()
@@ -132,6 +131,22 @@ namespace View
             _frame.color = _room.IsStarved ? _starvedTint : accent;
             _progressFill.color = _room.IsStarved ? _starvedTint : accent;
             _progressFill.fillAmount = _room.Progress01;
+        }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_button, nameof(_button));
+            this.RequireAssigned(_emptyState, nameof(_emptyState));
+            this.RequireAssigned(_builtState, nameof(_builtState));
+            this.RequireAssigned(_frame, nameof(_frame));
+            this.RequireAssigned(_icon, nameof(_icon));
+            this.RequireAssigned(_nameLabel, nameof(_nameLabel));
+            this.RequireAssigned(_levelLabel, nameof(_levelLabel));
+            this.RequireAssigned(_outputLabel, nameof(_outputLabel));
+            this.RequireAssigned(_progressFill, nameof(_progressFill));
+            this.RequireAssigned(_starvedBadge, nameof(_starvedBadge));
+            this.RequireAssigned(_boostBadge, nameof(_boostBadge));
+            this.RequireAssigned(_boostLabel, nameof(_boostLabel));
         }
     }
 }

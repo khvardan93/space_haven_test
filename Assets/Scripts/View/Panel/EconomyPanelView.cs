@@ -90,8 +90,20 @@ namespace View
 
         private void OnDestroy()
         {
-            if (_dimBackground) _dimBackground.onClick.RemoveListener(Close);
-            if (_closeButton) _closeButton.onClick.RemoveListener(Close);
+            _dimBackground.onClick.RemoveListener(Close);
+            _closeButton.onClick.RemoveListener(Close);
+        }
+
+        private void OnValidate()
+        {
+            this.RequireAssigned(_root, nameof(_root));
+            this.RequireAssigned(_dimBackground, nameof(_dimBackground));
+            this.RequireAssigned(_closeButton, nameof(_closeButton));
+            this.RequireAssigned(_summaryLabel, nameof(_summaryLabel));
+            this.RequireAssigned(_resourceRowPrefab, nameof(_resourceRowPrefab));
+            this.RequireAssigned(_resourceContainer, nameof(_resourceContainer));
+            this.RequireAssigned(_roomRowPrefab, nameof(_roomRowPrefab));
+            this.RequireAssigned(_roomContainer, nameof(_roomContainer));
         }
 
         private void Refresh()

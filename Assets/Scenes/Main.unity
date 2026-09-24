@@ -6237,8 +6237,8 @@ MonoBehaviour:
   _counterPrefab: {fileID: 8164154934343234651, guid: 81257ed55349f6144a94b8a27f8094fd, type: 3}
   _counterContainer: {fileID: 831755848}
   _laserView: {fileID: 1625676205}
-  _openPanelButton: {fileID: 0}
-  _economyPanel: {fileID: 0}
+  _openPanelButton: {fileID: 352652443}
+  _economyPanel: {fileID: 1783216926}
 --- !u!1 &1751821746
 GameObject:
   m_ObjectHideFlags: 0
