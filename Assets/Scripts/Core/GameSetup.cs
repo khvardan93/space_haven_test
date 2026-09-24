@@ -9,7 +9,7 @@ namespace Core
     {
         public int SlotCount { get; set; } = 8;
         public IReadOnlyList<Resource> StartingBalances { get; set; } = new List<Resource>();
-        public LaserSettings Laser { get; set; } = new LaserSettings();
+        public LaserSettings Laser { get; set; }
         public IReadOnlyList<RoomConfigs> Rooms { get; set; } = new List<RoomConfigs>();
         public TimeSpan OfflineCap { get; set; } = TimeSpan.FromHours(2);
     }

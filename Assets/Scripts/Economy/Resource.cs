@@ -5,26 +5,26 @@ namespace Economy
 {
     public readonly struct Resource
     {
-        public readonly ResourceType Type;
+        public readonly ResourceTypeEnum TypeEnum;
         public readonly double Amount;
 
-        public Resource(ResourceType type, double amount)
+        public Resource(ResourceTypeEnum typeEnum, double amount)
         {
             if (amount < 0 || double.IsNaN(amount) || double.IsInfinity(amount))
                 throw new ArgumentOutOfRangeException(nameof(amount), amount, "Amount must be a finite non-negative number.");
 
-            Type = type;
+            TypeEnum = typeEnum;
             Amount = amount;
         }
 
         public Resource Scaled(double multiplier)
         {
-            return new Resource(Type, Amount * multiplier);
+            return new Resource(TypeEnum, Amount * multiplier);
         }
 
         public override string ToString()
         {
-            return Amount + " " + Type;
+            return Amount + " " + TypeEnum;
         }
 
         public static Resource[] Scale(IReadOnlyList<Resource> source, double multiplier)

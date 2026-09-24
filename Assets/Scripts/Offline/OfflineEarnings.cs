@@ -11,15 +11,12 @@ namespace Offline
 
     public sealed class SystemTimeProvider : ITimeProvider
     {
-        public DateTime UtcNow
-        {
-            get { return DateTime.UtcNow; }
-        }
+        public DateTime UtcNow => DateTime.UtcNow; 
     }
 
     public sealed class OfflineReport
     {
-        public static readonly OfflineReport Empty = new OfflineReport(TimeSpan.Zero, false, new double[ResourceTypes.Count]);
+        public static readonly OfflineReport Empty = new(TimeSpan.Zero, false, new double[ResourceTypes.Count]);
 
         public TimeSpan Elapsed { get; private set; }
         public bool WasCapped { get; private set; }
@@ -46,9 +43,9 @@ namespace Offline
             NetChange = netChange;
         }
 
-        public double Get(ResourceType type)
+        public double Get(ResourceTypeEnum typeEnum)
         {
-            return NetChange[(int)type];
+            return NetChange[(int)typeEnum];
         }
     }
 
@@ -64,11 +61,10 @@ namespace Offline
 
         public OfflineEarnings(ITimeProvider time, TimeSpan cap, double stepSeconds = 1.0)
         {
-            if (time == null) throw new ArgumentNullException(nameof(time));
             if (cap <= TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(cap));
             if (stepSeconds <= 0) throw new ArgumentOutOfRangeException(nameof(stepSeconds));
 
-            _time = time;
+            _time = time ?? throw new ArgumentNullException(nameof(time));
             _cap = cap;
             _step = stepSeconds;
         }

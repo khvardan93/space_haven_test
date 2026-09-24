@@ -18,8 +18,8 @@ namespace View
             _context = context;
             _normalButton.onClick.AddListener(SetNormal);
             _fastButton.onClick.AddListener(SetFast);
-            if (_fastLabel != null)
-                _fastLabel.text = "x" + _fastScale.ToString("0");
+            if (_fastLabel)
+                _fastLabel.text = $"x{_fastScale:0}";
 
             Apply(1f);
         }

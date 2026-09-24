@@ -15,7 +15,7 @@ namespace Configs
         
         public Resource ToModel()
         {
-            return new Resource(_resource.Type, Math.Max(0, Amount));
+            return new Resource(_resource.TypeEnum, Math.Max(0, Amount));
         }
 
         public static Resource[] ToModel(ResourceAmount[] source)

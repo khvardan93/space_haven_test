@@ -28,7 +28,7 @@ namespace Simulation
         /// <summary>1 for normal speed, 5 for the demo fast-forward toggle.</summary>
         public float TimeScale
         {
-            get { return _timeScale; }
+            get => _timeScale; 
             set
             {
                 if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
@@ -44,13 +44,9 @@ namespace Simulation
 
         public GameSimulation(GameEconomy economy, LaserEnergy laser, PrisonBlock prison)
         {
-            if (economy == null) throw new ArgumentNullException(nameof(economy));
-            if (laser == null) throw new ArgumentNullException(nameof(laser));
-            if (prison == null) throw new ArgumentNullException(nameof(prison));
-
-            _economy = economy;
-            _laser = laser;
-            _prison = prison;
+            _economy = economy ?? throw new ArgumentNullException(nameof(economy));
+            _laser = laser ?? throw new ArgumentNullException(nameof(laser));
+            _prison = prison ?? throw new ArgumentNullException(nameof(prison));
         }
 
         /// <summary>Call once per frame with unscaled real delta time.</summary>
@@ -102,8 +98,7 @@ namespace Simulation
 
             SimulatedTime += dt;
 
-            var handler = Stepped;
-            if (handler != null) handler(dt);
+            Stepped?.Invoke(dt);
         }
     }
 }

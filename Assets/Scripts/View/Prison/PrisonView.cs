@@ -26,7 +26,7 @@ namespace View
             {
                 var view = Instantiate(_slotPrefab, _slotContainer);
                 view.gameObject.SetActive(true);
-                view.name = "Slot_" + slot;
+                view.name = $"Slot_{slot}";
                 view.Init(slot, context);
                 view.Clicked += OnSlotClicked;
                 _slots.Add(view);
@@ -40,15 +40,14 @@ namespace View
 
         private void OnSlotClicked(int slot)
         {
-            var handler = SlotClicked;
-            if (handler != null) handler(slot);
+            SlotClicked?.Invoke(slot);
         }
 
         private void OnDestroy()
         {
             foreach (var view in _slots)
             {
-                if (view != null)
+                if (view)
                     view.Clicked -= OnSlotClicked;
             }
         }

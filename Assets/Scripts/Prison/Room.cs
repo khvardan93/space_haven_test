@@ -26,33 +26,21 @@ namespace Prison
         public double BoostRemaining { get; private set; }
         public double BoostMultiplier { get; private set; }
 
-        public bool IsBoosted
-        {
-            get { return BoostRemaining > 0; }
-        }
+        public bool IsBoosted => BoostRemaining > 0; 
 
-        public bool IsMaxLevel
-        {
-            get { return Level >= Spec.MaxLevel; }
-        }
+        public bool IsMaxLevel => Level >= Spec.MaxLevel; 
 
-        public float Progress01
-        {
-            get { return (float)Math.Min(1.0, Progress / Spec.CycleTime); }
-        }
+        public float Progress01 => (float)Math.Min(1.0, Progress / Spec.CycleTime); 
 
-        public IReadOnlyList<Resource> CurrentOutputs
-        {
-            get { return _currentOutputs; }
-        }
+        public IReadOnlyList<Resource> CurrentOutputs => _currentOutputs; 
 
         /// <summary>Output per second at the current level, ignoring boost and starvation.</summary>
-        public double GetBaseRate(ResourceType type)
+        public double GetBaseRate(ResourceTypeEnum typeEnum)
         {
             var total = 0d;
             foreach (var output in _currentOutputs)
             {
-                if (output.Type == type)
+                if (output.TypeEnum == typeEnum)
                     total += output.Amount;
             }
             return total / Spec.CycleTime;
@@ -165,20 +153,17 @@ namespace Prison
 
         private void RaiseProduced(IReadOnlyList<Resource> amounts)
         {
-            var handler = Produced;
-            if (handler != null) handler(this, amounts);
+            Produced?.Invoke(this, amounts);
         }
 
         private void RaiseConsumed(IReadOnlyList<Resource> amounts)
         {
-            var handler = Consumed;
-            if (handler != null) handler(this, amounts);
+            Consumed?.Invoke(this, amounts);
         }
 
         private void RaiseStateChanged()
         {
-            var handler = StateChanged;
-            if (handler != null) handler(this);
+            StateChanged?.Invoke(this);
         }
     }
 }

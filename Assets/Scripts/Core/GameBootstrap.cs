@@ -71,7 +71,7 @@ namespace Core
             {
                 _model = GameModel.FromSave(setup, state, out var warnings);
                 foreach (var warning in warnings)
-                    Debug.LogWarning("[Save] " + warning);
+                    Debug.LogWarning($"[Save] {warning}");
 
                 LastOfflineReport = _offline.Apply(state.LastSaveUtc, _model.Simulation, _model.Economy);
             }
@@ -151,8 +151,7 @@ namespace Core
         {
             if (_prisonView != null && _actionPopup != null)
                 _prisonView.SlotClicked -= _actionPopup.Open;
-            if (_model != null)
-                _model.Dispose();
+            _model?.Dispose();
         }
 
         public void Save()
@@ -173,14 +172,13 @@ namespace Core
 
         private void RaiseOfflineApplied(OfflineReport report)
         {
-            Debug.Log("[Offline] " + NumberFormat.Duration(report.Elapsed.TotalSeconds) + (report.WasCapped ? " (capped)" : ""));
+            Debug.Log($"[Offline] {NumberFormat.Duration(report.Elapsed.TotalSeconds)}{(report.WasCapped ? " (capped)" : string.Empty)}");
 
             _actionPopup.Close();
             _economyPanel.Close();
             _offlinePopup.Show(report);
 
-            var handler = OfflineEarningsApplied;
-            if (handler != null) handler(report);
+            OfflineEarningsApplied?.Invoke(report);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Economy;
 using Offline;
@@ -10,11 +11,9 @@ namespace View
     public sealed class OfflinePopupView : MonoBehaviour
     {
         [SerializeField] private GameObject _root;
-        [SerializeField] private TMP_Text _titleLabel;
         [SerializeField] private TMP_Text _elapsedLabel;
         [SerializeField] private TMP_Text _gainsLabel;
         [SerializeField] private Button _collectButton;
-        [SerializeField] private TMP_Text _collectLabel;
 
         private static readonly StringBuilder Builder = new StringBuilder(128);
         private GameContext _context;
@@ -23,9 +22,7 @@ namespace View
         {
             _context = context;
             _collectButton.onClick.AddListener(Close);
-            _titleLabel.text = "Welcome back";
-            if (_collectLabel != null)
-                _collectLabel.text = "Collect";
+            
             Close();
         }
 
@@ -36,8 +33,8 @@ namespace View
 
             var elapsed = NumberFormat.Duration(report.Elapsed.TotalSeconds);
             _elapsedLabel.text = report.WasCapped
-                ? "While away for " + elapsed + " (capped)"
-                : "While away for " + elapsed;
+                ? $"While away for {elapsed} (capped)"
+                : $"While away for {elapsed}";
 
             Builder.Length = 0;
             foreach (var type in ResourceTypes.All)
@@ -52,7 +49,7 @@ namespace View
                 var color = CostFormatter.Hex(change > 0 ? _context.Content.GetColor(type) : UiColors.Negative);
                 Builder.Append("<color=").Append(color).Append('>')
                        .Append(change > 0 ? "+" : "-")
-                       .Append(NumberFormat.Short(System.Math.Abs(change)))
+                       .Append(NumberFormat.Short(Math.Abs(change)))
                        .Append("  ").Append(_context.Content.GetName(type))
                        .Append("</color>");
             }
@@ -68,7 +65,7 @@ namespace View
 
         private void OnDestroy()
         {
-            if (_collectButton != null)
+            if (_collectButton)
                 _collectButton.onClick.RemoveListener(Close);
         }
     }

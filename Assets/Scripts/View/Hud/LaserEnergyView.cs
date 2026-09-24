@@ -35,7 +35,7 @@ namespace View
             _shownTimerSeconds = seconds;
             _timerLabel.text = laser.IsFull
                 ? "Full"
-                : "Next in " + NumberFormat.Duration(seconds);
+                : $"Next in {NumberFormat.Duration(seconds)}";
         }
 
         private void OnDestroy()
@@ -53,7 +53,7 @@ namespace View
         {
             var laser = _context.Model.Laser;
             _fill.fillAmount = (float)laser.Current / laser.Max;
-            _valueLabel.text = laser.Current + " / " + laser.Max;
+            _valueLabel.text = $"{laser.Current} / {laser.Max}";
             _shownTimerSeconds = -1;
         }
     }

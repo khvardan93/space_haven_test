@@ -40,18 +40,13 @@ namespace View
         private int _slot = -1;
         private bool _dirty;
 
-        /// <summary>Raised after any build/upgrade/boost attempt. Phase 8 hooks feedback (punch scale, sound) here.</summary>
-        public event Action<int, ActionResult> ActionPerformed;
+        public event Action<int, ActionResultEnum> ActionPerformed;
 
-        public bool IsOpen
-        {
-            get { return _root.activeSelf; }
-        }
+        public bool IsOpen => _root.activeSelf;
 
         public void Init(GameContext context)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
 
             CreateBuildOptions();
 
@@ -114,7 +109,7 @@ namespace View
             {
                 var option = Instantiate(_optionPrefab, _optionContainer);
                 option.gameObject.SetActive(true);
-                option.name = "Option_" + spec.Id;
+                option.name = $"Option_{spec.Id}";
                 option.Setup(spec, _context);
                 option.Selected += OnBuildSelected;
                 _options.Add(option);
@@ -152,10 +147,10 @@ namespace View
             var definition = _context.Content.GetRoom(spec.Id);
 
             _titleLabel.text = spec.DisplayName;
-            _roomIcon.sprite = definition != null ? definition.Icon : null;
-            _roomIcon.enabled = _roomIcon.sprite != null;
-            _levelLabel.text = "Lv " + room.Level + " / " + spec.MaxLevel;
-            _currentOutputLabel.text = "Now: " + CostFormatter.Production(spec, room.CurrentOutputs, _context);
+            _roomIcon.sprite = definition ? definition.Icon : null;
+            _roomIcon.enabled = _roomIcon.sprite;
+            _levelLabel.text = $"Lv {room.Level} / {spec.MaxLevel}";
+            _currentOutputLabel.text = $"Now: {CostFormatter.Production(spec, room.CurrentOutputs, _context)}";
 
             // Upgrade
             if (room.IsMaxLevel)
@@ -168,17 +163,17 @@ namespace View
             else
             {
                 var nextOutputs = Resource.Scale(spec.Outputs, spec.GetOutputMultiplier(room.Level + 1));
-                _nextOutputLabel.text = "Next: " + CostFormatter.Production(spec, nextOutputs, _context);
-                _upgradeCostLabel.text = "Cost: " + CostFormatter.Cost(prison.GetUpgradeCost(_slot), spec.LaserUpgradeCost, _context);
+                _nextOutputLabel.text = $"Next: {CostFormatter.Production(spec, nextOutputs, _context)}";
+                _upgradeCostLabel.text = $"Cost: {CostFormatter.Cost(prison.GetUpgradeCost(_slot), spec.LaserUpgradeCost, _context)}";
                 _upgradeButtonLabel.text = "Upgrade";
-                _upgradeButton.interactable = prison.CanUpgrade(_slot) == ActionResult.Ok;
+                _upgradeButton.interactable = prison.CanUpgrade(_slot) == ActionResultEnum.Ok;
             }
 
             // Boost
             var laserSpec = _context.Model.Setup.Laser;
-            _boostButtonLabel.text = "Boost x" + laserSpec.BoostMultiplier.ToString("0") + " for " + laserSpec.BoostDuration.ToString("0") + "s";
+            _boostButtonLabel.text = $"Boost x{laserSpec.BoostMultiplier:0} for {laserSpec.BoostDuration:0}s";
             _boostCostLabel.text = CostFormatter.Cost(null, laserSpec.BoostCost, _context);
-            _boostButton.interactable = prison.CanBoost(_slot) == ActionResult.Ok;
+            _boostButton.interactable = prison.CanBoost(_slot) == ActionResultEnum.Ok;
         }
 
         // ---------- Actions ----------
@@ -189,13 +184,12 @@ namespace View
             var result = _context.Model.Prison.TryBuild(slot, spec);
             Report(slot, result);
 
-            if (result == ActionResult.Ok)
+            if (result == ActionResultEnum.Ok)
                 Close();
         }
 
         private void OnUpgradeClicked()
         {
-            // Stays open so the player can chain upgrades.
             Report(_slot, _context.Model.Prison.TryUpgrade(_slot));
         }
 
@@ -205,35 +199,34 @@ namespace View
             var result = _context.Model.Prison.TryBoost(slot);
             Report(slot, result);
 
-            if (result == ActionResult.Ok)
+            if (result == ActionResultEnum.Ok)
                 Close();
         }
 
-        private void Report(int slot, ActionResult result)
+        private void Report(int slot, ActionResultEnum resultEnum)
         {
-            _messageLabel.text = Message(result);
+            _messageLabel.text = Message(resultEnum);
 
-            var handler = ActionPerformed;
-            if (handler != null) handler(slot, result);
+            ActionPerformed?.Invoke(slot, resultEnum);
         }
 
-        private static string Message(ActionResult result)
+        private static string Message(ActionResultEnum resultEnum)
         {
-            switch (result)
+            return resultEnum switch
             {
-                case ActionResult.Ok: return "";
-                case ActionResult.NotEnoughResources: return "Not enough resources";
-                case ActionResult.NotEnoughLaser: return "Not enough Laser Energy";
-                case ActionResult.MaxLevel: return "Already at max level";
-                case ActionResult.Occupied: return "Cell is occupied";
-                case ActionResult.Empty: return "Cell is empty";
-                default: return "Invalid cell";
-            }
+                ActionResultEnum.Ok => "",
+                ActionResultEnum.NotEnoughResources => "Not enough resources",
+                ActionResultEnum.NotEnoughLaser => "Not enough Laser Energy",
+                ActionResultEnum.MaxLevel => "Already at max level",
+                ActionResultEnum.Occupied => "Cell is occupied",
+                ActionResultEnum.Empty => "Cell is empty",
+                _ => "Invalid cell"
+            };
         }
 
         // ---------- Model events ----------
 
-        private void OnEconomyChanged(ResourceType type, double value)
+        private void OnEconomyChanged(ResourceTypeEnum typeEnum, double value)
         {
             _dirty = true;
         }

@@ -66,7 +66,7 @@ namespace Configs
         
         private void OnValidate()
         {
-            var seenResourceTypes = new HashSet<ResourceType>();
+            var seenResourceTypes = new HashSet<ResourceTypeEnum>();
             if (_resources != null)
             {
                 foreach (var resource in _resources)
@@ -77,9 +77,9 @@ namespace Configs
                         continue;
                     }
 
-                    if (!seenResourceTypes.Add(resource.Type))
+                    if (!seenResourceTypes.Add(resource.TypeEnum))
                     {
-                        Debug.LogError($"{name}: duplicate ResourceType '{resource.Type}' in Resources.", this);
+                        Debug.LogError($"{name}: duplicate ResourceType '{resource.TypeEnum}' in Resources.", this);
                     }
 
                     foreach (var error in resource.Validate())

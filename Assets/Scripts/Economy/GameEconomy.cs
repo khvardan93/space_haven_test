@@ -15,34 +15,34 @@ namespace Economy
         private readonly double[] _balances = new double[ResourceTypes.Count];
         private readonly double[] _scratch = new double[ResourceTypes.Count];
 
-        public event Action<ResourceType, double> Changed;
+        public event Action<ResourceTypeEnum, double> Changed;
 
-        public double Get(ResourceType type)
+        public double Get(ResourceTypeEnum typeEnum)
         {
-            return _balances[(int)type];
+            return _balances[(int)typeEnum];
         }
 
-        public void Add(ResourceType type, double amount)
+        public void Add(ResourceTypeEnum typeEnum, double amount)
         {
             if (amount < 0 || double.IsNaN(amount) || double.IsInfinity(amount))
                 throw new ArgumentOutOfRangeException(nameof(amount), amount, "Use TrySpend to remove resources.");
             if (amount == 0)
                 return;
 
-            _balances[(int)type] += amount;
-            RaiseChanged(type);
+            _balances[(int)typeEnum] += amount;
+            RaiseChanged(typeEnum);
         }
 
         public void Add(IReadOnlyList<ResourceAmount> amounts)
         {
             for (var i = 0; i < amounts.Count; i++)
-                Add(amounts[i].Resource.Type, amounts[i].Amount);
+                Add(amounts[i].Resource.TypeEnum, amounts[i].Amount);
         }
         
         public void Add(IReadOnlyList<Resource> amounts)
         {
             for (var i = 0; i < amounts.Count; i++)
-                Add(amounts[i].Type, amounts[i].Amount);
+                Add(amounts[i].TypeEnum, amounts[i].Amount);
         }
 
         public bool CanAfford(IReadOnlyList<Resource> cost)
@@ -73,7 +73,7 @@ namespace Economy
                     continue;
 
                 _balances[i] = Math.Max(0, _balances[i] - _scratch[i]);
-                RaiseChanged((ResourceType)i);
+                RaiseChanged((ResourceTypeEnum)i);
             }
             return true;
         }
@@ -90,7 +90,7 @@ namespace Economy
             {
                 var value = balances != null && i < balances.Count ? balances[i] : 0;
                 _balances[i] = double.IsNaN(value) || value < 0 ? 0 : value;
-                RaiseChanged((ResourceType)i);
+                RaiseChanged((ResourceTypeEnum)i);
             }
         }
 
@@ -98,14 +98,12 @@ namespace Economy
         {
             Array.Clear(_scratch, 0, _scratch.Length);
             for (var i = 0; i < cost.Count; i++)
-                _scratch[(int)cost[i].Type] += cost[i].Amount;
+                _scratch[(int)cost[i].TypeEnum] += cost[i].Amount;
         }
 
-        private void RaiseChanged(ResourceType type)
+        private void RaiseChanged(ResourceTypeEnum typeEnum)
         {
-            var handler = Changed;
-            if (handler != null)
-                handler(type, _balances[(int)type]);
+            Changed?.Invoke(typeEnum, _balances[(int)typeEnum]);
         }
     }
 }

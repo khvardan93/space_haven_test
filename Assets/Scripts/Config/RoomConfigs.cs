@@ -47,7 +47,7 @@ namespace Configs
                 {
                     foreach (var cost in _cost)
                     {
-                        _inputResources.Add(new Resource(cost.Resource.Type, cost.Amount));
+                        _inputResources.Add(new Resource(cost.Resource.TypeEnum, cost.Amount));
                     }
                 }
 
@@ -65,7 +65,7 @@ namespace Configs
                 {
                     foreach (var input in _inputs)
                     {
-                        _inputResources.Add(new Resource(input.Resource.Type, input.Amount));
+                        _inputResources.Add(new Resource(input.Resource.TypeEnum, input.Amount));
                     }
                 }
 
@@ -81,7 +81,7 @@ namespace Configs
                 {
                     foreach (var output in _outputs)
                     {
-                        _outputResources.Add(new Resource(output.Resource.Type, output.Amount));
+                        _outputResources.Add(new Resource(output.Resource.TypeEnum, output.Amount));
                     }
                 }
 
@@ -100,7 +100,7 @@ namespace Configs
                 {
                     foreach (var cost in _upgradeBaseCost)
                     {
-                        _upgradeBaseCostResources.Add(new Resource(cost.Resource.Type, cost.Amount));
+                        _upgradeBaseCostResources.Add(new Resource(cost.Resource.TypeEnum, cost.Amount));
                     }
                 }
 
@@ -135,12 +135,12 @@ namespace Configs
             var label = string.IsNullOrEmpty(Id) ? "<no id>" : Id;
 
             if (string.IsNullOrWhiteSpace(Id)) errors.Add("Room has no Id.");
-            if (_cycleTime <= 0) errors.Add(label + ": CycleSeconds must be > 0.");
-            if (_maxLevel < 1) errors.Add(label + ": MaxLevel must be >= 1.");
-            if (_upgradeCostGrowth < 1) errors.Add(label + ": UpgradeCostGrowth must be >= 1.");
-            if (_outputGrowthPerLevel < 0) errors.Add(label + ": OutputGrowthPerLevel must be >= 0.");
-            if (_laserCost < 0 || _laserUpgradeCost < 0) errors.Add(label + ": laser costs must be >= 0.");
-            if (_outputs == null || _outputs.Length == 0) errors.Add(label + ": room produces nothing.");
+            if (_cycleTime <= 0) errors.Add($"{label}: CycleSeconds must be > 0.");
+            if (_maxLevel < 1) errors.Add($"{label}: MaxLevel must be >= 1.");
+            if (_upgradeCostGrowth < 1) errors.Add($"{label}: UpgradeCostGrowth must be >= 1.");
+            if (_outputGrowthPerLevel < 0) errors.Add($"{label}: OutputGrowthPerLevel must be >= 0.");
+            if (_laserCost < 0 || _laserUpgradeCost < 0) errors.Add($"{label}: laser costs must be >= 0.");
+            if (_outputs == null || _outputs.Length == 0) errors.Add($"{label}: room produces nothing.");
 
             CheckDuplicates(_cost, "BuildCost", label, errors);
             CheckDuplicates(_inputs, "Inputs", label, errors);
@@ -154,11 +154,11 @@ namespace Configs
             if (list == null)
                 return;
 
-            var seen = new HashSet<ResourceType>();
+            var seen = new HashSet<ResourceTypeEnum>();
             foreach (var item in list)
             {
-                if (!seen.Add(item.Resource.Type))
-                    errors.Add(label + ": " + field + " lists " + item.Resource.Type + " more than once.");
+                if (!seen.Add(item.Resource.TypeEnum))
+                    errors.Add($"{label}: {field} lists {item.Resource.TypeEnum} more than once.");
             }
         }
     }

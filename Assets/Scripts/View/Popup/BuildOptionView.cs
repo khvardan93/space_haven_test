@@ -33,25 +33,24 @@ namespace View
 
             var definition = context.Content.GetRoom(spec.Id);
             _icon.sprite = definition != null ? definition.Icon : null;
-            _icon.enabled = _icon.sprite != null;
+            _icon.enabled = _icon.sprite;
 
             _nameLabel.text = spec.DisplayName;
-            if (_descriptionLabel != null)
-                _descriptionLabel.text = definition != null ? definition.DisplayName : string.Empty;
+            if (_descriptionLabel)
+                _descriptionLabel.text = definition ? definition.DisplayName : string.Empty;
             _productionLabel.text = CostFormatter.Production(spec, spec.Outputs, context);
 
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(OnClick);
         }
 
-        /// <summary>Re-evaluates affordability for the given slot. Called whenever balances change while the popup is open.</summary>
         public void Refresh(int slot)
         {
             var result = _context.Model.Prison.CanBuild(slot, _spec);
-            var available = result == ActionResult.Ok;
+            var available = result == ActionResultEnum.Ok;
 
             _button.interactable = available;
-            if (_canvasGroup != null)
+            if (_canvasGroup)
                 _canvasGroup.alpha = available ? 1f : _disabledAlpha;
 
             _costLabel.text = CostFormatter.Cost(_spec.BuildCost, _spec.LaserBuildCost, _context);
@@ -59,8 +58,7 @@ namespace View
 
         private void OnClick()
         {
-            var handler = Selected;
-            if (handler != null) handler(_spec);
+            Selected?.Invoke(Spec);
         }
     }
 }

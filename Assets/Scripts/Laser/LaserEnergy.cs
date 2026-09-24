@@ -14,27 +14,15 @@ namespace Laser
 
         public int Current { get; private set; }
 
-        public int Max
-        {
-            get { return _spec.Max; }
-        }
+        public int Max => _spec.Max; 
 
-        public bool IsFull
-        {
-            get { return Current >= Max; }
-        }
+        public bool IsFull => Current >= Max; 
 
         /// <summary>Seconds until the next point regenerates, 0 when full. Used by the HUD timer.</summary>
-        public double SecondsToNext
-        {
-            get { return IsFull ? 0 : _spec.RegenSeconds - _timer; }
-        }
+        public double SecondsToNext => IsFull ? 0 : _spec.RegenSeconds - _timer; 
 
         /// <summary>Elapsed time toward the next point, stored in saves.</summary>
-        public double RegenTimer
-        {
-            get { return _timer; }
-        }
+        public double RegenTimer => _timer; 
 
         public event Action<int> Changed;
 
@@ -115,8 +103,7 @@ namespace Laser
 
         private void RaiseChanged()
         {
-            var handler = Changed;
-            if (handler != null) handler(Current);
+            Changed?.Invoke(Current);
         }
     }
 }

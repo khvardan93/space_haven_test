@@ -54,7 +54,7 @@ namespace Save
             var warnings = new List<string>();
 
             if (state.Version > GameState.CurrentVersion)
-                warnings.Add("Save version " + state.Version + " is newer than supported " + GameState.CurrentVersion + ".");
+                warnings.Add($"Save version {state.Version} is newer than supported {GameState.CurrentVersion}.");
             // Future: migrate older versions here before reading fields.
 
             model.Economy.SetAll(state.Balances);
@@ -70,12 +70,12 @@ namespace Save
 
                 if (!model.Catalog.TryGet(saved.SpecId, out var spec))
                 {
-                    warnings.Add("Unknown room '" + saved.SpecId + "' in slot " + saved.Slot + ", skipped.");
+                    warnings.Add($"Unknown room '{saved.SpecId}' in slot {saved.Slot}, skipped.");
                     continue;
                 }
                 if (!model.Prison.IsValidSlot(saved.Slot) || model.Prison.GetRoom(saved.Slot) != null)
                 {
-                    warnings.Add("Slot " + saved.Slot + " is invalid or taken, skipped '" + saved.SpecId + "'.");
+                    warnings.Add($"Slot {saved.Slot} is invalid or taken, skipped '{saved.SpecId}'.");
                     continue;
                 }
 

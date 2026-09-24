@@ -2,7 +2,7 @@ using System;
 
 namespace Economy
 {
-    public enum ResourceType
+    public enum ResourceTypeEnum
     {
         DarkMatter = 0,
         GlowingPlasma = 1,
@@ -11,7 +11,7 @@ namespace Economy
 
     public static class ResourceTypes
     {
-        public static readonly ResourceType[] All = (ResourceType[])Enum.GetValues(typeof(ResourceType));
+        public static readonly ResourceTypeEnum[] All = (ResourceTypeEnum[])Enum.GetValues(typeof(ResourceTypeEnum));
         public static readonly int Count = All.Length;
     }
 }

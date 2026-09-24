@@ -11,11 +11,8 @@ namespace View
 
         public GameContext(GameModel model, ContentLookup content)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-            if (content == null) throw new ArgumentNullException(nameof(content));
-
-            Model = model;
-            Content = content;
+            Model = model ?? throw new ArgumentNullException(nameof(model));
+            Content = content ?? throw new ArgumentNullException(nameof(content));
         }
     }
 }

@@ -14,15 +14,12 @@ namespace Core
         private readonly string _path;
         private readonly string _tempPath;
 
-        public string FilePath
-        {
-            get { return _path; }
-        }
-
+        public string FilePath => _path; 
+                
         public JsonSaveStorage(string fileName)
         {
             _path = Path.Combine(Application.persistentDataPath, fileName);
-            _tempPath = _path + ".tmp";
+            _tempPath = $"{_path}.tmp";
         }
 
         public bool TryLoad(out GameState state)
@@ -38,7 +35,7 @@ namespace Core
             }
             catch (Exception e)
             {
-                Debug.LogWarning("[Save] Could not read save, starting fresh. " + e.Message);
+                Debug.LogWarning($"[Save] Could not read save, starting fresh. {e.Message}");
                 state = null;
                 return false;
             }
@@ -55,7 +52,7 @@ namespace Core
             }
             catch (Exception e)
             {
-                Debug.LogError("[Save] Write failed: " + e.Message);
+                Debug.LogError($"[Save] Write failed: {e.Message}");
             }
         }
 

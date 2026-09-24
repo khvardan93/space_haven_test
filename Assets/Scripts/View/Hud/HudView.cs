@@ -13,7 +13,7 @@ namespace View
         [SerializeField] private Button _openPanelButton;
         [SerializeField] private EconomyPanelView _economyPanel;
 
-        private readonly List<ResourceCounterView> _counters = new List<ResourceCounterView>();
+        private readonly List<ResourceCounterView> _counters = new ();
         private GameContext _context;
         private bool _amountsDirty;
         private bool _ratesDirty;
@@ -28,7 +28,7 @@ namespace View
             foreach (var type in ResourceTypes.All)
             {
                 var counter = Instantiate(_counterPrefab, _counterContainer);
-                counter.name = "Counter_" + type;
+                counter.name = $"Counter_{type}";
                 counter.Setup(type, context);
                 _counters.Add(counter);
             }
@@ -54,14 +54,14 @@ namespace View
             {
                 _amountsDirty = false;
                 foreach (var counter in _counters)
-                    counter.SetAmount(_context.Model.Economy.Get(counter.Type));
+                    counter.SetAmount(_context.Model.Economy.Get(counter.TypeEnum));
             }
 
             if (_ratesDirty)
             {
                 _ratesDirty = false;
                 foreach (var counter in _counters)
-                    counter.SetRate(_context.Model.Rates.GetNet(counter.Type));
+                    counter.SetRate(_context.Model.Rates.GetNet(counter.TypeEnum));
             }
         }
 
@@ -76,7 +76,7 @@ namespace View
                 _openPanelButton.onClick.RemoveListener(_economyPanel.Toggle);
         }
 
-        private void OnEconomyChanged(ResourceType type, double value)
+        private void OnEconomyChanged(ResourceTypeEnum typeEnum, double value)
         {
             _amountsDirty = true;
         }

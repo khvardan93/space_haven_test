@@ -1,6 +1,5 @@
 using System.Text;
 using Configs;
-using Prison;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,16 +23,21 @@ namespace SpacePrison.View
             Spec = spec;
 
             var definition = context.Content.GetRoom(spec.Id);
-            _icon.sprite = definition != null ? definition.Icon : null;
-            _icon.enabled = _icon.sprite != null;
+            _icon.sprite = definition ? definition.Icon : null;
+            _icon.enabled = _icon.sprite;
             _nameLabel.text = spec.DisplayName;
-            if (definition != null)
+            if (definition)
                 _nameLabel.color = definition.Color;
         }
 
         public void Refresh(GameContext context)
         {
-            int count = 0, working = 0, starved = 0, boosted = 0, totalLevels = 0, maxLevel = 0;
+            var count = 0;
+            var working = 0;
+            var starved = 0;
+            var boosted = 0;
+            var totalLevels = 0;
+            var maxLevel = 0;
 
             var rooms = context.Model.Prison.Rooms;
             for (var i = 0; i < rooms.Count; i++)
@@ -49,7 +53,7 @@ namespace SpacePrison.View
                 if (room.IsBoosted) boosted++;
             }
 
-            _countLabel.text = "x" + count;
+            _countLabel.text = $"x{count}";
 
             Builder.Length = 0;
             if (count == 0)

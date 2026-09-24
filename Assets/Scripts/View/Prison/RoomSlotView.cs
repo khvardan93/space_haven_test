@@ -28,13 +28,9 @@ namespace View
 
         [Header("Status")]
         [SerializeField] private GameObject _starvedBadge;
-        [SerializeField] private TMP_Text _starvedLabel;
         [SerializeField] private GameObject _boostBadge;
         [SerializeField] private TMP_Text _boostLabel;
         [SerializeField] private Color _starvedTint = new Color(1f, 0.35f, 0.35f, 1f);
-
-        [Header("Empty")]
-        [SerializeField] private TMP_Text _emptyLabel;
 
         private GameContext _context;
         private Room _room;
@@ -43,10 +39,7 @@ namespace View
 
         public event Action<int> Clicked;
 
-        public int Slot
-        {
-            get { return _slot; }
-        }
+        public int Slot => _slot; 
 
         public void Init(int slot, GameContext context)
         {
@@ -55,11 +48,6 @@ namespace View
 
             _button.onClick.AddListener(OnClick);
             _context.Model.Prison.SlotChanged += OnSlotChanged;
-
-            if (_emptyLabel != null)
-                _emptyLabel.text = "Tap to build";
-            if (_starvedLabel != null)
-                _starvedLabel.text = "NO INPUT";
 
             BindRoom(_context.Model.Prison.GetRoom(_slot));
         }
@@ -77,7 +65,7 @@ namespace View
                 if (seconds != _shownBoostSeconds)
                 {
                     _shownBoostSeconds = seconds;
-                    _boostLabel.text = "x" + _room.BoostMultiplier.ToString("0") + "  " + NumberFormat.Duration(seconds);
+                    _boostLabel.text = $"x{_room.BoostMultiplier:0}  {NumberFormat.Duration(seconds)}";
                 }
             }
         }
@@ -88,14 +76,13 @@ namespace View
                 _context.Model.Prison.SlotChanged -= OnSlotChanged;
             if (_room != null)
                 _room.StateChanged -= OnRoomStateChanged;
-            if (_button != null)
+            if (_button)
                 _button.onClick.RemoveListener(OnClick);
         }
 
         private void OnClick()
         {
-            var handler = Clicked;
-            if (handler != null) handler(_slot);
+            Clicked?.Invoke(_slot);
         }
 
         private void OnSlotChanged(int slot)
@@ -130,12 +117,12 @@ namespace View
                 return;
 
             var definition = _context.Content.GetRoom(_room.Spec.Id);
-            var accent = definition != null ? definition.Color : Color.white;
+            var accent = definition ? definition.Color : Color.white;
 
-            _icon.sprite = definition != null ? definition.Icon : null;
-            _icon.enabled = _icon.sprite != null;
+            _icon.sprite = definition ? definition.Icon : null;
+            _icon.enabled = _icon.sprite;
             _nameLabel.text = _room.Spec.DisplayName;
-            _levelLabel.text = "Lv " + _room.Level;
+            _levelLabel.text = $"Lv {_room.Level}";
             _outputLabel.text = CostFormatter.Production(_room.Spec, _room.CurrentOutputs, _context);
 
             _starvedBadge.SetActive(_room.IsStarved);

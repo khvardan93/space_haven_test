@@ -12,7 +12,7 @@ namespace View
         private const string MissingColor = "#FF5A5A";
         private const string LaserColor = "#FFC23D";
 
-        private static readonly StringBuilder Builder = new StringBuilder(64);
+        private static readonly StringBuilder Builder = new(64);
 
         public static string Cost(IReadOnlyList<Resource> cost, int laserCost, GameContext context)
         {
@@ -23,7 +23,7 @@ namespace View
             {
                 for (var i = 0; i < cost.Count; i++)
                 {
-                    var affordable = economy.Get(cost[i].Type) + 1e-9 >= cost[i].Amount;
+                    var affordable = economy.Get(cost[i].TypeEnum) + 1e-9 >= cost[i].Amount;
                     AppendAmount(cost[i], context, affordable ? null : MissingColor);
                 }
             }
@@ -73,10 +73,10 @@ namespace View
         {
             if (separate) Separator();
 
-            var color = overrideColor ?? Hex(context.Content.GetColor(amount.Type));
+            var color = overrideColor ?? Hex(context.Content.GetColor(amount.TypeEnum));
             Builder.Append("<color=").Append(color).Append('>')
                    .Append(NumberFormat.Short(amount.Amount)).Append(' ')
-                   .Append(context.Content.GetShortName(amount.Type))
+                   .Append(context.Content.GetShortName(amount.TypeEnum))
                    .Append("</color>");
         }
 

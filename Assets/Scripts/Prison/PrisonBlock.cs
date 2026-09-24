@@ -19,10 +19,7 @@ namespace Prison
         private readonly LaserEnergy _laser;
         private readonly LaserSettings _laserSpec;
 
-        public int SlotCount
-        {
-            get { return _slots.Length; }
-        }
+        public int SlotCount => _slots.Length; 
 
         /// <summary>Built rooms in build order. Used by the simulation loop, so no allocation per tick.</summary>
         public IReadOnlyList<Room> Rooms => _rooms; 
@@ -67,47 +64,47 @@ namespace Prison
 
         // ---------- Build ----------
 
-        public ActionResult CanBuild(int slot, RoomConfigs spec)
+        public ActionResultEnum CanBuild(int slot, RoomConfigs spec)
         {
             if (spec == null) throw new ArgumentNullException(nameof(spec));
-            if (!IsValidSlot(slot)) return ActionResult.InvalidSlot;
-            if (_slots[slot] != null) return ActionResult.Occupied;
+            if (!IsValidSlot(slot)) return ActionResultEnum.InvalidSlot;
+            if (_slots[slot] != null) return ActionResultEnum.Occupied;
             return CheckCosts(spec.BuildCost, spec.LaserBuildCost);
         }
 
-        public ActionResult TryBuild(int slot, RoomConfigs spec)
+        public ActionResultEnum TryBuild(int slot, RoomConfigs spec)
         {
             var result = CanBuild(slot, spec);
-            if (result != ActionResult.Ok)
+            if (result != ActionResultEnum.Ok)
                 return result;
 
             Pay(spec.BuildCost, spec.LaserBuildCost);
             PlaceRoom(slot, new Room(spec));
-            return ActionResult.Ok;
+            return ActionResultEnum.Ok;
         }
 
         // ---------- Upgrade ----------
 
-        public ActionResult CanUpgrade(int slot)
+        public ActionResultEnum CanUpgrade(int slot)
         {
-            if (!IsValidSlot(slot)) return ActionResult.InvalidSlot;
+            if (!IsValidSlot(slot)) return ActionResultEnum.InvalidSlot;
             var room = _slots[slot];
-            if (room == null) return ActionResult.Empty;
-            if (room.IsMaxLevel) return ActionResult.MaxLevel;
+            if (room == null) return ActionResultEnum.Empty;
+            if (room.IsMaxLevel) return ActionResultEnum.MaxLevel;
             return CheckCosts(room.Spec.GetUpgradeCost(room.Level), room.Spec.LaserUpgradeCost);
         }
 
-        public ActionResult TryUpgrade(int slot)
+        public ActionResultEnum TryUpgrade(int slot)
         {
             var result = CanUpgrade(slot);
-            if (result != ActionResult.Ok)
+            if (result != ActionResultEnum.Ok)
                 return result;
 
             var room = _slots[slot];
             Pay(room.Spec.GetUpgradeCost(room.Level), room.Spec.LaserUpgradeCost);
             room.SetLevel(room.Level + 1);
             RaiseSlotChanged(slot);
-            return ActionResult.Ok;
+            return ActionResultEnum.Ok;
         }
 
         /// <summary>Upgrade cost for the room in this slot, or null when empty or maxed. For the popup.</summary>
@@ -121,23 +118,23 @@ namespace Prison
 
         // ---------- Boost ----------
 
-        public ActionResult CanBoost(int slot)
+        public ActionResultEnum CanBoost(int slot)
         {
-            if (!IsValidSlot(slot)) return ActionResult.InvalidSlot;
-            if (_slots[slot] == null) return ActionResult.Empty;
-            return _laser.CanSpend(_laserSpec.BoostCost) ? ActionResult.Ok : ActionResult.NotEnoughLaser;
+            if (!IsValidSlot(slot)) return ActionResultEnum.InvalidSlot;
+            if (_slots[slot] == null) return ActionResultEnum.Empty;
+            return _laser.CanSpend(_laserSpec.BoostCost) ? ActionResultEnum.Ok : ActionResultEnum.NotEnoughLaser;
         }
 
-        public ActionResult TryBoost(int slot)
+        public ActionResultEnum TryBoost(int slot)
         {
             var result = CanBoost(slot);
-            if (result != ActionResult.Ok)
+            if (result != ActionResultEnum.Ok)
                 return result;
 
             _laser.TrySpend(_laserSpec.BoostCost);
             _slots[slot].ApplyBoost(_laserSpec.BoostDuration, _laserSpec.BoostMultiplier);
             RaiseSlotChanged(slot);
-            return ActionResult.Ok;
+            return ActionResultEnum.Ok;
         }
 
         // ---------- Internals ----------
@@ -151,8 +148,7 @@ namespace Prison
             _slots[slot] = room;
             _rooms.Add(room);
 
-            var added = RoomAdded;
-            if (added != null) added(room);
+            RoomAdded?.Invoke(room);
             RaiseSlotChanged(slot);
         }
 
@@ -161,11 +157,11 @@ namespace Prison
             return Array.IndexOf(_slots, room);
         }
 
-        private ActionResult CheckCosts(IReadOnlyList<Resource> cost, int laserCost)
+        private ActionResultEnum CheckCosts(IReadOnlyList<Resource> cost, int laserCost)
         {
-            if (!_economy.CanAfford(cost)) return ActionResult.NotEnoughResources;
-            if (!_laser.CanSpend(laserCost)) return ActionResult.NotEnoughLaser;
-            return ActionResult.Ok;
+            if (!_economy.CanAfford(cost)) return ActionResultEnum.NotEnoughResources;
+            if (!_laser.CanSpend(laserCost)) return ActionResultEnum.NotEnoughLaser;
+            return ActionResultEnum.Ok;
         }
 
         private void Pay(IReadOnlyList<Resource> cost, int laserCost)
@@ -177,8 +173,7 @@ namespace Prison
 
         private void RaiseSlotChanged(int slot)
         {
-            var handler = SlotChanged;
-            if (handler != null) handler(slot);
+            SlotChanged?.Invoke(slot);
         }
     }
 }

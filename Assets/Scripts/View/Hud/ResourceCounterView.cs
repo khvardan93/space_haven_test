@@ -14,16 +14,16 @@ namespace View
         private string _shownAmount;
         private string _shownRate;
 
-        public ResourceType Type { get; private set; }
+        public ResourceTypeEnum TypeEnum { get; private set; }
 
-        public void Setup(ResourceType type, GameContext context)
+        public void Setup(ResourceTypeEnum typeEnum, GameContext context)
         {
-            Type = type;
+            TypeEnum = typeEnum;
 
-            var definition = context.Content.GetResource(type);
+            var definition = context.Content.GetResource(typeEnum);
             _icon.sprite = definition != null ? definition.Icon : null;
             _icon.enabled = _icon.sprite != null;
-            _amountLabel.color = context.Content.GetColor(type);
+            _amountLabel.color = context.Content.GetColor(typeEnum);
         }
 
         public void SetAmount(double amount)

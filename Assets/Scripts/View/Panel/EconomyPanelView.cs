@@ -12,45 +12,35 @@ namespace View
         [SerializeField] private GameObject _root;
         [SerializeField] private Button _dimBackground;
         [SerializeField] private Button _closeButton;
-        [SerializeField] private TMP_Text _titleLabel;
         [SerializeField] private TMP_Text _summaryLabel;
 
         [Header("Resources")]
-        [SerializeField] private TMP_Text _resourcesHeader;
         [SerializeField] private ResourceRowView _resourceRowPrefab;
         [SerializeField] private RectTransform _resourceContainer;
 
         [Header("Rooms")]
-        [SerializeField] private TMP_Text _roomsHeader;
         [SerializeField] private RoomStatRowView _roomRowPrefab;
         [SerializeField] private RectTransform _roomContainer;
 
         [Header("Refresh")]
         [SerializeField, Range(1f, 30f)] private float _refreshPerSecond = 4f;
 
-        private readonly List<ResourceRowView> _resourceRows = new List<ResourceRowView>();
-        private readonly List<RoomStatRowView> _roomRows = new List<RoomStatRowView>();
+        private readonly List<ResourceRowView> _resourceRows = new ();
+        private readonly List<RoomStatRowView> _roomRows = new ();
         private GameContext _context;
         private float _timer;
 
-        public bool IsOpen
-        {
-            get { return _root.activeSelf; }
-        }
+        public bool IsOpen => _root.activeSelf;
 
         public void Init(GameContext context)
         {
             _context = context;
 
-            _titleLabel.text = "Economy";
-            if (_resourcesHeader != null) _resourcesHeader.text = "Resources";
-            if (_roomsHeader != null) _roomsHeader.text = "Rooms";
-
             Clear(_resourceContainer);
             foreach (var type in ResourceTypes.All)
             {
                 var row = Instantiate(_resourceRowPrefab, _resourceContainer);
-                row.name = "Resource_" + type;
+                row.name = $"Resource_{type}";
                 row.Setup(type, context);
                 _resourceRows.Add(row);
             }
@@ -59,7 +49,7 @@ namespace View
             foreach (var spec in context.Model.Catalog.All)
             {
                 var row = Instantiate(_roomRowPrefab, _roomContainer);
-                row.name = "Room_" + spec.Id;
+                row.name = $"Room_{spec.Id}";
                 row.Setup(spec, context);
                 _roomRows.Add(row);
             }
@@ -100,8 +90,8 @@ namespace View
 
         private void OnDestroy()
         {
-            if (_dimBackground != null) _dimBackground.onClick.RemoveListener(Close);
-            if (_closeButton != null) _closeButton.onClick.RemoveListener(Close);
+            if (_dimBackground) _dimBackground.onClick.RemoveListener(Close);
+            if (_closeButton) _closeButton.onClick.RemoveListener(Close);
         }
 
         private void Refresh()
@@ -112,8 +102,8 @@ namespace View
                 row.Refresh(_context);
 
             var model = _context.Model;
-            _summaryLabel.text = model.Prison.Rooms.Count + " / " + model.Prison.SlotCount + " rooms   "
-                + model.Laser.Current + " / " + model.Laser.Max + " LE   x" + model.Simulation.TimeScale.ToString("0");
+            _summaryLabel.text =
+                $"{model.Prison.Rooms.Count} / {model.Prison.SlotCount} rooms   {model.Laser.Current} / {model.Laser.Max} LE   x{model.Simulation.TimeScale:0}";
         }
 
         private static void Clear(RectTransform container)

@@ -32,29 +32,27 @@ namespace Simulation
 
         public RateTracker(PrisonBlock prison, GameSimulation simulation, double smoothingSeconds = 2.0)
         {
-            if (prison == null) throw new ArgumentNullException(nameof(prison));
-            if (simulation == null) throw new ArgumentNullException(nameof(simulation));
             if (smoothingSeconds <= 0) throw new ArgumentOutOfRangeException(nameof(smoothingSeconds));
 
-            _prison = prison;
-            _simulation = simulation;
+            _prison = prison ?? throw new ArgumentNullException(nameof(prison));
+            _simulation = simulation ?? throw new ArgumentNullException(nameof(simulation));
             _smoothingSeconds = smoothingSeconds;
             _simulation.Stepped += OnStepped;
         }
 
-        public double GetProduction(ResourceType type)
+        public double GetProduction(ResourceTypeEnum typeEnum)
         {
-            return _production[(int)type];
+            return _production[(int)typeEnum];
         }
 
-        public double GetConsumption(ResourceType type)
+        public double GetConsumption(ResourceTypeEnum typeEnum)
         {
-            return _consumption[(int)type];
+            return _consumption[(int)typeEnum];
         }
 
-        public double GetNet(ResourceType type)
+        public double GetNet(ResourceTypeEnum typeEnum)
         {
-            return GetProduction(type) - GetConsumption(type);
+            return GetProduction(typeEnum) - GetConsumption(typeEnum);
         }
 
         public void Dispose()
@@ -80,8 +78,7 @@ namespace Simulation
             if (_sinceRefresh >= RefreshInterval)
             {
                 _sinceRefresh = 0;
-                var handler = Updated;
-                if (handler != null) handler();
+                Updated?.Invoke();
             }
         }
 
@@ -101,11 +98,11 @@ namespace Simulation
 
                 var outputs = room.CurrentOutputs;
                 for (var i = 0; i < outputs.Count; i++)
-                    _instantProduction[(int)outputs[i].Type] += outputs[i].Amount * cyclesPerSecond;
+                    _instantProduction[(int)outputs[i].TypeEnum] += outputs[i].Amount * cyclesPerSecond;
 
                 var inputs = room.Spec.Inputs;
                 for (var i = 0; i < inputs.Count; i++)
-                    _instantConsumption[(int)inputs[i].Type] += inputs[i].Amount * cyclesPerSecond;
+                    _instantConsumption[(int)inputs[i].TypeEnum] += inputs[i].Amount * cyclesPerSecond;
             }
         }
     }

@@ -6,7 +6,7 @@ namespace View
     /// <summary>Idle-game number formatting: 950, 1.2K, 34.5M, 1.20B.</summary>
     public static class NumberFormat
     {
-        private static readonly string[] Suffixes = { "", "K", "M", "B", "T", "Qa", "Qi" };
+        private static readonly string[] Suffixes = { string.Empty, "K", "M", "B", "T", "Qa", "Qi" };
         private static readonly CultureInfo Culture = CultureInfo.InvariantCulture;
 
         public static string Short(double value)
@@ -48,7 +48,7 @@ namespace View
             var number = abs < 10 ? abs.ToString("0.0#", Culture)
                           : abs < 1000 ? abs.ToString("0.#", Culture)
                           : Short(abs);
-            return sign + number + "/s";
+            return $"{sign + number}/s";
         }
 
         /// <summary>"45s", "3m 05s", "1h 20m".</summary>

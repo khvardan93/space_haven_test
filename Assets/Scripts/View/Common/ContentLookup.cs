@@ -11,7 +11,7 @@ namespace View
     /// </summary>
     public sealed class ContentLookup
     {
-        private readonly Dictionary<string, RoomConfigs> _rooms = new ();
+        private readonly Dictionary<string, RoomConfigs> _rooms = new();
         private readonly ResourceConfigs[] _resources = new ResourceConfigs[ResourceTypes.Count];
 
         public ContentLookup(GameConfigs config)
@@ -30,7 +30,7 @@ namespace View
                 foreach (var resource in config.Resources)
                 {
                     if (resource != null)
-                        _resources[(int)resource.Type] = resource;
+                        _resources[(int)resource.TypeEnum] = resource;
                 }
             }
         }
@@ -40,27 +40,27 @@ namespace View
             return id != null && _rooms.TryGetValue(id, out var room) ? room : null;
         }
 
-        public ResourceConfigs GetResource(ResourceType type)
+        public ResourceConfigs GetResource(ResourceTypeEnum typeEnum)
         {
-            return _resources[(int)type];
+            return _resources[(int)typeEnum];
         }
 
-        public Color GetColor(ResourceType type)
+        public Color GetColor(ResourceTypeEnum typeEnum)
         {
-            var resource = GetResource(type);
-            return resource != null ? resource.Color : Color.white;
+            var resource = GetResource(typeEnum);
+            return resource ? resource.Color : Color.white;
         }
 
-        public string GetShortName(ResourceType type)
+        public string GetShortName(ResourceTypeEnum typeEnum)
         {
-            var resource = GetResource(type);
-            return resource != null ? resource.DisplayName : type.ToString();
+            var resource = GetResource(typeEnum);
+            return resource ? resource.DisplayName : typeEnum.ToString();
         }
 
-        public string GetName(ResourceType type)
+        public string GetName(ResourceTypeEnum typeEnum)
         {
-            var resource = GetResource(type);
-            return resource != null ? resource.DisplayName : type.ToString();
+            var resource = GetResource(typeEnum);
+            return resource != null ? resource.DisplayName : typeEnum.ToString();
         }
     }
 }

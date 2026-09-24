@@ -21,9 +21,9 @@ namespace Prison
             {
                 var errors = spec.Validate();
                 if (errors.Count > 0)
-                    throw new ArgumentException("Invalid room spec: " + string.Join(" ", errors.ToArray()));
+                    throw new ArgumentException($"Invalid room spec: {string.Join(" ", errors.ToArray())}");
                 if (_byId.ContainsKey(spec.Id))
-                    throw new ArgumentException("Duplicate room id: " + spec.Id);
+                    throw new ArgumentException($"Duplicate room id: {spec.Id}");
 
                 _byId.Add(spec.Id, spec);
                 _all.Add(spec);
@@ -42,9 +42,7 @@ namespace Prison
 
         public RoomConfigs Get(string id)
         {
-            if (!TryGet(id, out var spec))
-                throw new KeyNotFoundException("Unknown room id: " + id);
-            return spec;
+            return !TryGet(id, out var spec) ? throw new KeyNotFoundException($"Unknown room id: {id}") : spec;
         }
     }
 }

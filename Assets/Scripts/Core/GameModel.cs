@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Configs;
 using Economy;
 using Laser;
 using Prison;
@@ -19,9 +18,7 @@ namespace Core
         public RoomCatalog Catalog { get; private set; }
         public RateTracker Rates { get; private set; }
 
-        private GameModel()
-        {
-        }
+        private GameModel() { }
 
         public static GameModel CreateNew(GameSetup setup)
         {
