@@ -37,9 +37,9 @@ namespace View
             var net = production - consumption;
 
             _balanceLabel.text = NumberFormat.Short(context.Model.Economy.Get(Type));
-            _productionLabel.text = Loc.Format("panel_prod", NumberFormat.Rate(production));
-            _consumptionLabel.text = Loc.Format("panel_use", consumption > 0.005 ? NumberFormat.Rate(-consumption) : "0/s");
-            _netLabel.text = Loc.Format("panel_net", NumberFormat.Rate(net));
+            _productionLabel.text = "+" + NumberFormat.Rate(production);
+            _consumptionLabel.text = consumption > 0.005 ? NumberFormat.Rate(-consumption) : "0/s";
+            _netLabel.text = "Net " + NumberFormat.Rate(net);
             _netLabel.color = UiColors.ForRate(net);
         }
     }

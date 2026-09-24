@@ -26,7 +26,7 @@ namespace SpacePrison.View
             var definition = context.Content.GetRoom(spec.Id);
             _icon.sprite = definition != null ? definition.Icon : null;
             _icon.enabled = _icon.sprite != null;
-            _nameLabel.text = Loc.Get(spec.Id);
+            _nameLabel.text = spec.DisplayName;
             if (definition != null)
                 _nameLabel.color = definition.Color;
         }
@@ -54,16 +54,16 @@ namespace SpacePrison.View
             Builder.Length = 0;
             if (count == 0)
             {
-                Builder.Append(Loc.Get("panel_none_built"));
+                Builder.Append("None built");
             }
             else
             {
-                Builder.Append(Loc.Format("panel_levels", totalLevels, maxLevel));
-                Builder.Append("   ").Append(Loc.Format("panel_working", working));
+                Builder.Append("Lv ").Append(totalLevels).Append('/').Append(maxLevel);
+                Builder.Append("   ").Append(working).Append(" working");
                 if (starved > 0)
-                    Builder.Append("   <color=#FF5A5A>").Append(Loc.Format("panel_starved", starved)).Append("</color>");
+                    Builder.Append("   <color=#FF5A5A>").Append(starved).Append(" starved").Append("</color>");
                 if (boosted > 0)
-                    Builder.Append("   <color=#FFC23D>").Append(Loc.Format("panel_boosted", boosted)).Append("</color>");
+                    Builder.Append("   <color=#FFC23D>").Append(boosted).Append(" boosted").Append("</color>");
             }
             _detailLabel.text = Builder.ToString();
         }

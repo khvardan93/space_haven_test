@@ -34,8 +34,8 @@ namespace View
 
             _shownTimerSeconds = seconds;
             _timerLabel.text = laser.IsFull
-                ? Loc.Get("laser_full")
-                : Loc.Format("laser_next", NumberFormat.Duration(seconds));
+                ? "Full"
+                : "Next in " + NumberFormat.Duration(seconds);
         }
 
         private void OnDestroy()

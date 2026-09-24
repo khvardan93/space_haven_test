@@ -35,9 +35,9 @@ namespace View
             _icon.sprite = definition != null ? definition.Icon : null;
             _icon.enabled = _icon.sprite != null;
 
-            _nameLabel.text = Loc.Get(spec.Id);
+            _nameLabel.text = spec.DisplayName;
             if (_descriptionLabel != null)
-                _descriptionLabel.text = definition != null ? Loc.Get(definition.Id) : string.Empty;
+                _descriptionLabel.text = definition != null ? definition.DisplayName : string.Empty;
             _productionLabel.text = CostFormatter.Production(spec, spec.Outputs, context);
 
             _button.onClick.RemoveAllListeners();

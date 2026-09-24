@@ -57,9 +57,9 @@ namespace View
             _context.Model.Prison.SlotChanged += OnSlotChanged;
 
             if (_emptyLabel != null)
-                _emptyLabel.text = Loc.Get("slot_tap_to_build");
+                _emptyLabel.text = "Tap to build";
             if (_starvedLabel != null)
-                _starvedLabel.text = Loc.Get("slot_starved");
+                _starvedLabel.text = "NO INPUT";
 
             BindRoom(_context.Model.Prison.GetRoom(_slot));
         }
@@ -134,8 +134,8 @@ namespace View
 
             _icon.sprite = definition != null ? definition.Icon : null;
             _icon.enabled = _icon.sprite != null;
-            _nameLabel.text = Loc.Get(_room.Spec.Id);
-            _levelLabel.text = Loc.Format("slot_level", _room.Level);
+            _nameLabel.text = _room.Spec.DisplayName;
+            _levelLabel.text = "Lv " + _room.Level;
             _outputLabel.text = CostFormatter.Production(_room.Spec, _room.CurrentOutputs, _context);
 
             _starvedBadge.SetActive(_room.IsStarved);

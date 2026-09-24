@@ -42,9 +42,9 @@ namespace View
         {
             _context = context;
 
-            _titleLabel.text = Loc.Get("panel_title");
-            if (_resourcesHeader != null) _resourcesHeader.text = Loc.Get("panel_resources");
-            if (_roomsHeader != null) _roomsHeader.text = Loc.Get("panel_rooms");
+            _titleLabel.text = "Economy";
+            if (_resourcesHeader != null) _resourcesHeader.text = "Resources";
+            if (_roomsHeader != null) _roomsHeader.text = "Rooms";
 
             Clear(_resourceContainer);
             foreach (var type in ResourceTypes.All)
@@ -112,10 +112,8 @@ namespace View
                 row.Refresh(_context);
 
             var model = _context.Model;
-            _summaryLabel.text = Loc.Format("panel_summary",
-                model.Prison.Rooms.Count, model.Prison.SlotCount,
-                model.Laser.Current, model.Laser.Max,
-                model.Simulation.TimeScale.ToString("0"));
+            _summaryLabel.text = model.Prison.Rooms.Count + " / " + model.Prison.SlotCount + " rooms   "
+                + model.Laser.Current + " / " + model.Laser.Max + " LE   x" + model.Simulation.TimeScale.ToString("0");
         }
 
         private static void Clear(RectTransform container)

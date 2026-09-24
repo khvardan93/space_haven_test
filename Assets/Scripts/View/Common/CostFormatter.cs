@@ -33,7 +33,7 @@ namespace View
                 var affordable = context.Model.Laser.CanSpend(laserCost);
                 Separator();
                 Builder.Append("<color=").Append(affordable ? LaserColor : MissingColor).Append('>')
-                       .Append(laserCost).Append(' ').Append(Loc.Get("laser_energy_short")).Append("</color>");
+                       .Append(laserCost).Append(' ').Append("LE").Append("</color>");
             }
 
             return Builder.ToString();

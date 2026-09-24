@@ -54,13 +54,13 @@ namespace View
         public string GetShortName(ResourceType type)
         {
             var resource = GetResource(type);
-            return resource != null ? Loc.Get(resource.DisplayName + "_short") : type.ToString();
+            return resource != null ? resource.DisplayName : type.ToString();
         }
 
         public string GetName(ResourceType type)
         {
             var resource = GetResource(type);
-            return resource != null ? Loc.Get(resource.DisplayName) : type.ToString();
+            return resource != null ? resource.DisplayName : type.ToString();
         }
     }
 }

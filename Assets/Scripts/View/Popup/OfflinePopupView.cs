@@ -23,9 +23,9 @@ namespace View
         {
             _context = context;
             _collectButton.onClick.AddListener(Close);
-            _titleLabel.text = Loc.Get("offline_title");
+            _titleLabel.text = "Welcome back";
             if (_collectLabel != null)
-                _collectLabel.text = Loc.Get("offline_collect");
+                _collectLabel.text = "Collect";
             Close();
         }
 
@@ -36,8 +36,8 @@ namespace View
 
             var elapsed = NumberFormat.Duration(report.Elapsed.TotalSeconds);
             _elapsedLabel.text = report.WasCapped
-                ? Loc.Format("offline_elapsed_capped", elapsed)
-                : Loc.Format("offline_elapsed", elapsed);
+                ? "While away for " + elapsed + " (capped)"
+                : "While away for " + elapsed;
 
             Builder.Length = 0;
             foreach (var type in ResourceTypes.All)

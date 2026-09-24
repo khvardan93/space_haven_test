@@ -140,7 +140,7 @@ namespace View
 
         private void RefreshBuildMode()
         {
-            _titleLabel.text = Loc.Get("popup_build_title");
+            _titleLabel.text = "Build";
             foreach (var option in _options)
                 option.Refresh(_slot);
         }
@@ -151,32 +151,32 @@ namespace View
             var prison = _context.Model.Prison;
             var definition = _context.Content.GetRoom(spec.Id);
 
-            _titleLabel.text = Loc.Get(spec.Id);
+            _titleLabel.text = spec.DisplayName;
             _roomIcon.sprite = definition != null ? definition.Icon : null;
             _roomIcon.enabled = _roomIcon.sprite != null;
-            _levelLabel.text = Loc.Format("slot_level", room.Level) + " / " + spec.MaxLevel;
-            _currentOutputLabel.text = Loc.Format("popup_output_now", CostFormatter.Production(spec, room.CurrentOutputs, _context));
+            _levelLabel.text = "Lv " + room.Level + " / " + spec.MaxLevel;
+            _currentOutputLabel.text = "Now: " + CostFormatter.Production(spec, room.CurrentOutputs, _context);
 
             // Upgrade
             if (room.IsMaxLevel)
             {
                 _nextOutputLabel.text = string.Empty;
                 _upgradeCostLabel.text = string.Empty;
-                _upgradeButtonLabel.text = Loc.Get("popup_max_level");
+                _upgradeButtonLabel.text = "Max level";
                 _upgradeButton.interactable = false;
             }
             else
             {
                 var nextOutputs = Resource.Scale(spec.Outputs, spec.GetOutputMultiplier(room.Level + 1));
-                _nextOutputLabel.text = Loc.Format("popup_output_next", CostFormatter.Production(spec, nextOutputs, _context));
-                _upgradeCostLabel.text = Loc.Format("popup_cost", CostFormatter.Cost(prison.GetUpgradeCost(_slot), spec.LaserUpgradeCost, _context));
-                _upgradeButtonLabel.text = Loc.Get("popup_upgrade");
+                _nextOutputLabel.text = "Next: " + CostFormatter.Production(spec, nextOutputs, _context);
+                _upgradeCostLabel.text = "Cost: " + CostFormatter.Cost(prison.GetUpgradeCost(_slot), spec.LaserUpgradeCost, _context);
+                _upgradeButtonLabel.text = "Upgrade";
                 _upgradeButton.interactable = prison.CanUpgrade(_slot) == ActionResult.Ok;
             }
 
             // Boost
             var laserSpec = _context.Model.Setup.Laser;
-            _boostButtonLabel.text = Loc.Format("popup_boost", laserSpec.BoostMultiplier.ToString("0"), laserSpec.BoostDuration.ToString("0"));
+            _boostButtonLabel.text = "Boost x" + laserSpec.BoostMultiplier.ToString("0") + " for " + laserSpec.BoostDuration.ToString("0") + "s";
             _boostCostLabel.text = CostFormatter.Cost(null, laserSpec.BoostCost, _context);
             _boostButton.interactable = prison.CanBoost(_slot) == ActionResult.Ok;
         }
@@ -211,23 +211,23 @@ namespace View
 
         private void Report(int slot, ActionResult result)
         {
-            _messageLabel.text = Loc.Get(MessageKey(result));
+            _messageLabel.text = Message(result);
 
             var handler = ActionPerformed;
             if (handler != null) handler(slot, result);
         }
 
-        private static string MessageKey(ActionResult result)
+        private static string Message(ActionResult result)
         {
             switch (result)
             {
-                case ActionResult.Ok: return "result_ok";
-                case ActionResult.NotEnoughResources: return "result_not_enough_resources";
-                case ActionResult.NotEnoughLaser: return "result_not_enough_laser";
-                case ActionResult.MaxLevel: return "result_max_level";
-                case ActionResult.Occupied: return "result_occupied";
-                case ActionResult.Empty: return "result_empty";
-                default: return "result_invalid_slot";
+                case ActionResult.Ok: return "";
+                case ActionResult.NotEnoughResources: return "Not enough resources";
+                case ActionResult.NotEnoughLaser: return "Not enough Laser Energy";
+                case ActionResult.MaxLevel: return "Already at max level";
+                case ActionResult.Occupied: return "Cell is occupied";
+                case ActionResult.Empty: return "Cell is empty";
+                default: return "Invalid cell";
             }
         }
 
