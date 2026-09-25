@@ -47,7 +47,7 @@ namespace Configs
                 {
                     foreach (var cost in _cost)
                     {
-                        _inputResources.Add(new Resource(cost.Resource.TypeEnum, cost.Amount));
+                        _buildCost.Add(new Resource(cost.Resource.TypeEnum, cost.Amount));
                     }
                 }
 
