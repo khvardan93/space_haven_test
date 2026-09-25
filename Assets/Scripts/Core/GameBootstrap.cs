@@ -8,11 +8,6 @@ using View;
 
 namespace Core
 {
-    /// <summary>
-    /// Composition root and the only MonoBehaviour that owns the model.
-    /// Startup order matters: load save, apply offline earnings, then create views,
-    /// so catch-up production does not trigger per-cycle UI effects.
-    /// </summary>
     [DefaultExecutionOrder(-100)]
     public sealed class GameBootstrap : MonoBehaviour
     {
@@ -43,12 +38,10 @@ namespace Core
         private DateTime _pausedAtUtc;
         private bool _paused;
 
-        public GameContext Context => _context; 
+        public GameContext Context => _context;
 
-        /// <summary>Last offline catch-up result (launch or return from background). Null when nothing was applied.</summary>
         public OfflineReport LastOfflineReport { get; private set; }
 
-        /// <summary>Raised after time away was converted into resources and the welcome-back popup was shown.</summary>
         public event Action<OfflineReport> OfflineEarningsApplied;
 
         private void Awake()
@@ -75,7 +68,6 @@ namespace Core
 
             _context = new GameContext(_model, new ContentLookup(_config));
 
-            // Panel before HUD: the HUD button toggles the panel.
             _economyPanel.Init(_context);
             _hud.Init(_context);
             _actionPopup.Init(_context);
@@ -83,14 +75,13 @@ namespace Core
             _prisonView.Init(_context);
             _prisonView.SlotClicked += _actionPopup.Open;
 
-            // Optional: remove the speed toggle object from the scene for a "release" build.
             if (_timeScale != null)
                 _timeScale.Init(_context);
         }
 
         private void Start()
         {
-            // Listeners from other components subscribe in their Awake/OnEnable, so raise the launch report here.
+            
             if (LastOfflineReport != null && LastOfflineReport.HasGains)
                 RaiseOfflineApplied(LastOfflineReport);
         }
@@ -110,10 +101,6 @@ namespace Core
             }
         }
 
-        /// <summary>
-        /// Android sends the app to background with pause=true. Save immediately (the OS may kill us without OnApplicationQuit),
-        /// and on return convert the time away into offline earnings instead of one huge frame.
-        /// </summary>
         private void OnApplicationPause(bool pause)
         {
             if (_model == null)
@@ -158,7 +145,7 @@ namespace Core
         private void DeleteSave()
         {
             new JsonSaveStorage(SaveFileName).Delete();
-            _useSave = false; // Prevent OnApplicationQuit from writing it back during this play session.
+            _useSave = false; 
             Debug.Log("[Save] Deleted. Restart play mode for a fresh game.");
         }
 

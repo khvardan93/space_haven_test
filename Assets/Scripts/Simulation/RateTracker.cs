@@ -4,15 +4,6 @@ using Prison;
 
 namespace Simulation
 {
-    /// <summary>
-    /// Per-second production and consumption rates for the economy panel.
-    ///
-    /// Each step it computes the instantaneous rate from room state (level, boost, starvation)
-    /// and smooths it with an exponential moving average. Why not count produced resources over a window:
-    /// with 2s and 5s cycles a 5s window aliases (two cells show 1.6 or 2.4 instead of 2.0).
-    /// Why smooth at all: a refinery that is starved part of the time flickers between full rate and 0;
-    /// the average shows its real throughput. Rates are per simulated second.
-    /// </summary>
     public sealed class RateTracker : IDisposable
     {
         private const double RefreshInterval = 0.5;
@@ -27,7 +18,6 @@ namespace Simulation
         private double _sinceRefresh;
         private bool _hasSample;
 
-        /// <summary>Raised twice per simulated second, a good moment for the panel to refresh rate labels.</summary>
         public event Action Updated;
 
         public RateTracker(PrisonBlock prison, GameSimulation simulation, double smoothingSeconds = 2.0)
@@ -64,7 +54,6 @@ namespace Simulation
         {
             ComputeInstant();
 
-            // First sample: jump straight to the value instead of easing in from 0.
             var alpha = _hasSample ? 1 - Math.Exp(-dt / _smoothingSeconds) : 1;
             _hasSample = true;
 

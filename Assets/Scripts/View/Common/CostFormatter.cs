@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace View
 {
-    /// <summary>Builds TMP rich text for costs and outputs, e.g. "150 DM  20 PL  3 LE". Unaffordable parts turn red.</summary>
+    
     public static class CostFormatter
     {
         private const string MissingColor = "#FF5A5A";
@@ -39,7 +39,6 @@ namespace View
             return Builder.ToString();
         }
 
-        /// <summary>"2 DM / 2s" or "5 DM + 2 PL > 1 KC / 5s".</summary>
         public static string Production(RoomConfigs spec, IReadOnlyList<Resource> outputs, GameContext context)
         {
             Builder.Length = 0;

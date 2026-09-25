@@ -2,10 +2,6 @@ using System;
 
 namespace Save
 {
-    /// <summary>
-    /// Plain serializable snapshot of the game. Public fields so Unity's JsonUtility can write it.
-    /// Writing to disk lives in the Services layer; the model only defines the shape.
-    /// </summary>
     [Serializable]
     public sealed class GameState
     {

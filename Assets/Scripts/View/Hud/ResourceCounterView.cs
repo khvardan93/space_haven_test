@@ -28,7 +28,7 @@ namespace View
 
         public void SetAmount(double amount)
         {
-            // Only touch TMP when the visible string changes; rebuilding text meshes every frame is wasteful on mobile.
+            
             var text = NumberFormat.Short(amount);
             if (text == _shownAmount)
                 return;

@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace View
 {
-    /// <summary>Keeps a full-screen panel inside the device safe area (notches, punch-hole cameras, gesture bar).</summary>
     [RequireComponent(typeof(RectTransform))]
     public sealed class SafeAreaFitter : MonoBehaviour
     {
@@ -18,7 +17,6 @@ namespace View
 
         private void Update()
         {
-            // Cheap check; the safe area only changes on rotation or window resize.
             if (Screen.safeArea != _applied || Screen.width != _screenSize.x || Screen.height != _screenSize.y)
                 Apply();
         }

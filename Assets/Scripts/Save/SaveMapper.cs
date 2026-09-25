@@ -6,7 +6,7 @@ using Prison;
 
 namespace Save
 {
-    /// <summary>Converts between the live model and GameState. Restore is forgiving: bad entries are skipped and reported.</summary>
+    
     public static class SaveMapper
     {
         public static GameState Capture(GameModel model, DateTime nowUtc)
@@ -42,10 +42,6 @@ namespace Save
             };
         }
 
-        /// <summary>
-        /// Applies a saved state to a freshly created model (empty prison).
-        /// Returns warnings for anything that could not be restored, e.g. a room type removed in an update.
-        /// </summary>
         public static List<string> Restore(GameState state, GameModel model)
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
@@ -55,8 +51,7 @@ namespace Save
 
             if (state.Version > GameState.CurrentVersion)
                 warnings.Add($"Save version {state.Version} is newer than supported {GameState.CurrentVersion}.");
-            // Future: migrate older versions here before reading fields.
-
+            
             model.Economy.SetAll(state.Balances);
             model.Laser.RestoreState(state.LaserCurrent, state.LaserTimer);
 

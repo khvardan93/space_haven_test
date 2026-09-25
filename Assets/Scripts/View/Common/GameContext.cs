@@ -3,7 +3,6 @@ using Core;
 
 namespace View
 {
-    /// <summary>What every view receives from GameBootstrap: the live model plus art and colors for its content.</summary>
     public sealed class GameContext
     {
         public GameModel Model { get; private set; }

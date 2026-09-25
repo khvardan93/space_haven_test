@@ -5,10 +5,7 @@ using UnityEngine;
 
 namespace Core
 {
-    /// <summary>
-    /// Saves GameState as JSON in persistentDataPath. Writes to a temp file first and then swaps,
-    /// so a crash or battery death mid-write never leaves a corrupted save.
-    /// </summary>
+    
     public sealed class JsonSaveStorage
     {
         private readonly string _path;

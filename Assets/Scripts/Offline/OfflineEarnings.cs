@@ -21,7 +21,6 @@ namespace Offline
         public TimeSpan Elapsed { get; private set; }
         public bool WasCapped { get; private set; }
 
-        /// <summary>Net change per resource, indexed by (int)ResourceType. Can be negative for consumed inputs.</summary>
         public double[] NetChange { get; private set; }
 
         public bool HasGains
@@ -49,10 +48,6 @@ namespace Offline
         }
     }
 
-    /// <summary>
-    /// Catches up time spent away by running the normal simulation in 1s steps.
-    /// Chains, starvation, laser regen and boost expiry all behave exactly as in live play.
-    /// </summary>
     public sealed class OfflineEarnings
     {
         private readonly ITimeProvider _time;
@@ -69,10 +64,6 @@ namespace Offline
             _step = stepSeconds;
         }
 
-        /// <summary>
-        /// Call after loading a save and before views subscribe to events,
-        /// so thousands of catch-up cycles do not spawn floating text.
-        /// </summary>
         public OfflineReport Apply(DateTime lastSaveUtc, GameSimulation simulation, GameEconomy economy)
         {
             if (simulation == null) throw new ArgumentNullException(nameof(simulation));
@@ -80,7 +71,6 @@ namespace Offline
 
             var elapsed = _time.UtcNow - lastSaveUtc;
 
-            // Clock moved backwards (manual change or timezone bug): grant nothing.
             if (elapsed <= TimeSpan.Zero)
                 return OfflineReport.Empty;
 

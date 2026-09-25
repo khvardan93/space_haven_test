@@ -4,12 +4,10 @@ using Configs;
 
 namespace Economy
 {
-    /// <summary>
-    /// Holds resource balances. All spending is atomic: a multi-resource cost is either paid in full or not at all.
-    /// </summary>
+    
     public sealed class GameEconomy
     {
-        // Tolerance for floating point drift, so 9.9999999 counts as affording 10.
+        
         private const double Epsilon = 1e-9;
 
         private readonly double[] _balances = new double[ResourceTypes.Count];
@@ -66,7 +64,6 @@ namespace Economy
             if (cost == null || cost.Count == 0)
                 return true;
 
-            // _scratch still holds the per-type totals computed by CanAfford.
             for (var i = 0; i < _scratch.Length; i++)
             {
                 if (_scratch[i] <= 0)
@@ -83,7 +80,6 @@ namespace Economy
             return (double[])_balances.Clone();
         }
 
-        /// <summary>Replaces all balances, used when loading a save. Missing entries become 0.</summary>
         public void SetAll(IReadOnlyList<double> balances)
         {
             for (var i = 0; i < _balances.Length; i++)

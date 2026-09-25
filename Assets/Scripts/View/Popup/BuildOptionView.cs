@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace View
 {
-    /// <summary>One row in the build list: icon, name, what it produces, cost, and a Build button.</summary>
+    
     public sealed class BuildOptionView : MonoBehaviour
     {
         [SerializeField] private Button _button;

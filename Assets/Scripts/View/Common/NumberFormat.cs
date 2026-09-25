@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace View
 {
-    /// <summary>Idle-game number formatting: 950, 1.2K, 34.5M, 1.20B.</summary>
+    
     public static class NumberFormat
     {
         private static readonly string[] Suffixes = { string.Empty, "K", "M", "B", "T", "Qa", "Qi" };
@@ -37,7 +37,6 @@ namespace View
             return (negative ? "-" : "") + number + Suffixes[tier];
         }
 
-        /// <summary>"+2.5/s", "-0.4/s", or "0/s".</summary>
         public static string Rate(double perSecond)
         {
             if (Math.Abs(perSecond) < 0.005)
@@ -51,7 +50,6 @@ namespace View
             return $"{sign + number}/s";
         }
 
-        /// <summary>"45s", "3m 05s", "1h 20m".</summary>
         public static string Duration(double seconds)
         {
             if (seconds < 0) seconds = 0;

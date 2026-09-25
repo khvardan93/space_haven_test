@@ -5,10 +5,7 @@ using UnityEngine;
 
 namespace View
 {
-    /// <summary>
-    /// Finds the ScriptableObject behind a model id, for icons and colors.
-    /// The model only knows ids and numbers; presentation data stays on this side.
-    /// </summary>
+    
     public sealed class ContentLookup
     {
         private readonly Dictionary<string, RoomConfigs> _rooms = new();

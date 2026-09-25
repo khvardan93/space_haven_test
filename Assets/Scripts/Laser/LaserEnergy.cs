@@ -3,10 +3,7 @@ using Configs;
 
 namespace Laser
 {
-    /// <summary>
-    /// Regenerating action points. Building and upgrading cost Laser Energy (action limiting),
-    /// and it can be spent to boost a room's speed. Regen pauses while the pool is full.
-    /// </summary>
+    
     public sealed class LaserEnergy
     {
         private readonly LaserSettings _spec;
@@ -18,10 +15,8 @@ namespace Laser
 
         public bool IsFull => Current >= Max; 
 
-        /// <summary>Seconds until the next point regenerates, 0 when full. Used by the HUD timer.</summary>
         public double SecondsToNext => IsFull ? 0 : _spec.RegenSeconds - _timer; 
 
-        /// <summary>Elapsed time toward the next point, stored in saves.</summary>
         public double RegenTimer => _timer; 
 
         public event Action<int> Changed;
@@ -77,7 +72,6 @@ namespace Laser
             return true;
         }
 
-        /// <summary>Adds energy up to Max. Hook for a future rewarded-ad refill.</summary>
         public void Restore(int amount)
         {
             if (amount <= 0 || IsFull)

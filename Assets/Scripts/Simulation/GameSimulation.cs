@@ -5,18 +5,12 @@ using Prison;
 
 namespace Simulation
 {
-    /// <summary>
-    /// Fixed-step game loop. Live play and offline catch-up both go through Step(),
-    /// so there is exactly one code path for production.
-    /// </summary>
     public sealed class GameSimulation
     {
         public const double FixedStep = 0.1;
 
-        // Caps catch-up work per frame (1s of game time at x1) to avoid a spiral of death after a hitch.
         private const int MaxStepsPerUpdate = 10;
 
-        // Tolerance for accumulated floating point error in time sums.
         private const double TimeEpsilon = 1e-9;
 
         private readonly GameEconomy _economy;
@@ -25,7 +19,6 @@ namespace Simulation
         private double _accumulator;
         private float _timeScale = 1f;
 
-        /// <summary>1 for normal speed, 5 for the demo fast-forward toggle.</summary>
         public float TimeScale
         {
             get => _timeScale; 
@@ -36,10 +29,8 @@ namespace Simulation
             }
         }
 
-        /// <summary>Total simulated seconds since this object was created.</summary>
         public double SimulatedTime { get; private set; }
 
-        /// <summary>Raised after each simulation step with its duration. RateTracker uses it as its clock.</summary>
         public event Action<double> Stepped;
 
         public GameSimulation(GameEconomy economy, LaserEnergy laser, PrisonBlock prison)
@@ -49,7 +40,6 @@ namespace Simulation
             _prison = prison ?? throw new ArgumentNullException(nameof(prison));
         }
 
-        /// <summary>Call once per frame with unscaled real delta time.</summary>
         public void Update(double realDeltaTime)
         {
             if (realDeltaTime <= 0 || _timeScale <= 0)
@@ -65,12 +55,10 @@ namespace Simulation
                 steps++;
             }
 
-            // Drop backlog we could not process this frame instead of piling it up.
             if (steps == MaxStepsPerUpdate && _accumulator > FixedStep)
                 _accumulator = FixedStep;
         }
 
-        /// <summary>Runs a block of time immediately, e.g. offline catch-up. Uses larger steps for speed.</summary>
         public void Advance(double seconds, double step)
         {
             if (seconds <= 0)

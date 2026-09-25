@@ -6,10 +6,7 @@ using UnityEngine.UI;
 
 namespace View
 {
-    /// <summary>
-    /// One cell of the cellblock. Static info (name, level, output, starved) refreshes on model events;
-    /// only the progress bar and boost countdown update every frame, since they change continuously.
-    /// </summary>
+    
     public sealed class RoomSlotView : MonoBehaviour
     {
         [SerializeField] private Button _button;

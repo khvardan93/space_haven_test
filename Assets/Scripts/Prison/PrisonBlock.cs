@@ -6,11 +6,7 @@ using Laser;
 
 namespace Prison
 {
-    /// <summary>
-    /// The cellblock: a fixed number of slots, each empty or holding a room.
-    /// Every action validates resources and laser energy before spending either, so a failure never spends half.
-    /// Can* and Try* share the same validation so the UI and the logic always agree.
-    /// </summary>
+    
     public sealed class PrisonBlock
     {
         private readonly Room[] _slots;
@@ -21,12 +17,10 @@ namespace Prison
 
         public int SlotCount => _slots.Length; 
 
-        /// <summary>Built rooms in build order. Used by the simulation loop, so no allocation per tick.</summary>
         public IReadOnlyList<Room> Rooms => _rooms; 
 
-        /// <summary>Raised when a room is built, upgraded or boosted in a slot.</summary>
         public event Action<int> SlotChanged;
-        /// <summary>Raised when a new room object exists, so systems can subscribe to its events.</summary>
+        
         public event Action<Room> RoomAdded;
 
         public PrisonBlock(int slotCount, GameEconomy economy, LaserEnergy laser, LaserSettings laserSpec)
@@ -107,7 +101,6 @@ namespace Prison
             return ActionResultEnum.Ok;
         }
 
-        /// <summary>Upgrade cost for the room in this slot, or null when empty or maxed. For the popup.</summary>
         public Resource[] GetUpgradeCost(int slot)
         {
             var room = GetRoom(slot);
@@ -137,9 +130,6 @@ namespace Prison
             return ActionResultEnum.Ok;
         }
 
-        // ---------- Internals ----------
-
-        /// <summary>Puts a room into a slot without paying. Used by TryBuild and by save loading.</summary>
         internal void PlaceRoom(int slot, Room room)
         {
             if (!IsValidSlot(slot)) throw new ArgumentOutOfRangeException(nameof(slot));
@@ -166,7 +156,7 @@ namespace Prison
 
         private void Pay(IReadOnlyList<Resource> cost, int laserCost)
         {
-            // Both were validated just before, so neither can fail here.
+            
             _economy.TrySpend(cost);
             _laser.TrySpend(laserCost);
         }

@@ -4,7 +4,6 @@ using Configs;
 
 namespace Prison
 {
-    /// <summary>All room types available in the game, looked up by id (used by the build menu and save loading).</summary>
     public sealed class RoomCatalog
     {
         private readonly Dictionary<string, RoomConfigs> _byId = new ();

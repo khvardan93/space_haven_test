@@ -5,16 +5,12 @@ using Economy;
 
 namespace Prison
 {
-    /// <summary>
-    /// A built room in a prison slot. Runs production cycles: inputs are consumed and outputs produced
-    /// at the end of each cycle. Without inputs the room waits with a full bar (starved) until they arrive.
-    /// </summary>
+    
     public sealed class Room
     {
-        // Safety net against a runaway loop from a huge dt or a tiny cycle time.
+        
         private const int MaxCyclesPerTick = 10000;
 
-        // Summing 0.1 twenty times gives 1.9999999, not 2. Without a tolerance cycles fire one step late.
         private const double TimeEpsilon = 1e-9;
 
         private Resource[] _currentOutputs;
@@ -34,7 +30,6 @@ namespace Prison
 
         public IReadOnlyList<Resource> CurrentOutputs => _currentOutputs; 
 
-        /// <summary>Output per second at the current level, ignoring boost and starvation.</summary>
         public double GetBaseRate(ResourceTypeEnum typeEnum)
         {
             var total = 0d;
@@ -46,9 +41,8 @@ namespace Prison
             return total / Spec.CycleTime;
         }
 
-        /// <summary>Raised after outputs are added to the economy. Arguments are the room and what it produced.</summary>
         public event Action<Room, IReadOnlyList<Resource>> Produced;
-        /// <summary>Raised after inputs are taken from the economy.</summary>
+        
         public event Action<Room, IReadOnlyList<Resource>> Consumed;
         public event Action<Room> StateChanged;
 
@@ -76,7 +70,6 @@ namespace Prison
                 {
                     if (!economy.TrySpend(Spec.Inputs))
                     {
-                        // Hold the bar at full and fire as soon as inputs arrive.
                         Progress = Spec.CycleTime;
                         SetStarved(true);
                         return;
@@ -96,7 +89,6 @@ namespace Prison
                 Progress = 0;
         }
 
-        /// <summary>Refreshes the boost to the given duration. Boosts do not stack.</summary>
         public void ApplyBoost(double duration, double multiplier)
         {
             if (duration <= 0) throw new ArgumentOutOfRangeException(nameof(duration));
@@ -121,10 +113,6 @@ namespace Prison
             BoostMultiplier = Math.Max(1, boostMultiplier);
         }
 
-        /// <summary>
-        /// Converts real time into production time. If the boost ends inside this tick,
-        /// only the boosted part is multiplied, so offline steps of 1s stay exact.
-        /// </summary>
         private double EffectiveTime(double dt)
         {
             if (!IsBoosted)
