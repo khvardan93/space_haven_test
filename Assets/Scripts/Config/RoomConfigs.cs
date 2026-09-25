@@ -38,6 +38,11 @@ namespace Configs
         public string DisplayName => _displayName;
         public Sprite Icon => _icon;
         public Color Color => _color;
+        public float CycleTime => _cycleTime;
+        public int MaxLevel => _maxLevel;
+        public float UpgradeCostGrowth => _upgradeCostGrowth;
+        public float OutputGrowthPerLevel => _outputGrowthPerLevel;
+        public int LaserUpgradeCost => _laserUpgradeCost;
 
         public IReadOnlyList<Resource> BuildCost
         {
@@ -89,10 +94,6 @@ namespace Configs
             }
         }
         
-        public float CycleTime => _cycleTime;
-
-        public int MaxLevel => _maxLevel;
-        
         public IReadOnlyList<Resource> UpgradeBaseCost  {
             get
             {
@@ -107,10 +108,6 @@ namespace Configs
                 return _upgradeBaseCostResources;
             }
         }
-        
-        public float UpgradeCostGrowth => _upgradeCostGrowth;
-        public float OutputGrowthPerLevel => _outputGrowthPerLevel;
-        public int LaserUpgradeCost => _laserUpgradeCost;
         
         public Resource[] GetUpgradeCost(int currentLevel)
         {

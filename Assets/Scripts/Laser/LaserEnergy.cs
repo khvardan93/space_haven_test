@@ -3,20 +3,15 @@ using Configs;
 
 namespace Laser
 {
-    
     public sealed class LaserEnergy
     {
         private readonly LaserSettings _spec;
         private double _timer;
 
         public int Current { get; private set; }
-
         public int Max => _spec.Max; 
-
         public bool IsFull => Current >= Max; 
-
         public double SecondsToNext => IsFull ? 0 : _spec.RegenSeconds - _timer; 
-
         public double RegenTimer => _timer; 
 
         public event Action<int> Changed;

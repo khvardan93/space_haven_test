@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace View
 {
-    
     public sealed class ContentLookup
     {
         private readonly Dictionary<string, RoomConfigs> _rooms = new();

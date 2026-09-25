@@ -27,7 +27,7 @@ namespace View
         [SerializeField] private GameObject _starvedBadge;
         [SerializeField] private GameObject _boostBadge;
         [SerializeField] private TMP_Text _boostLabel;
-        [SerializeField] private Color _starvedTint = new Color(1f, 0.35f, 0.35f, 1f);
+        [SerializeField] private Color _starvedTint = new(1f, 0.35f, 0.35f, 1f);
 
         private GameContext _context;
         private Room _room;
@@ -56,15 +56,14 @@ namespace View
 
             _progressFill.fillAmount = _room.Progress01;
 
-            if (_room.IsBoosted)
-            {
-                var seconds = (int)Math.Ceiling(_room.BoostRemaining);
-                if (seconds != _shownBoostSeconds)
-                {
-                    _shownBoostSeconds = seconds;
-                    _boostLabel.text = $"x{_room.BoostMultiplier:0}  {NumberFormat.Duration(seconds)}";
-                }
-            }
+            if (!_room.IsBoosted) return;
+            
+            var seconds = (int)Math.Ceiling(_room.BoostRemaining);
+            
+            if (seconds == _shownBoostSeconds) return;
+            
+            _shownBoostSeconds = seconds;
+            _boostLabel.text = $"x{_room.BoostMultiplier:0}  {NumberFormat.Duration(seconds)}";
         }
 
         private void OnDestroy()

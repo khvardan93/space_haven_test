@@ -10,7 +10,6 @@ namespace Prison
     {
         
         private const int MaxCyclesPerTick = 10000;
-
         private const double TimeEpsilon = 1e-9;
 
         private Resource[] _currentOutputs;
@@ -21,13 +20,9 @@ namespace Prison
         public bool IsStarved { get; private set; }
         public double BoostRemaining { get; private set; }
         public double BoostMultiplier { get; private set; }
-
         public bool IsBoosted => BoostRemaining > 0; 
-
         public bool IsMaxLevel => Level >= Spec.MaxLevel; 
-
         public float Progress01 => (float)Math.Min(1.0, Progress / Spec.CycleTime); 
-
         public IReadOnlyList<Resource> CurrentOutputs => _currentOutputs; 
 
         public double GetBaseRate(ResourceTypeEnum typeEnum)
@@ -42,7 +37,6 @@ namespace Prison
         }
 
         public event Action<Room, IReadOnlyList<Resource>> Produced;
-        
         public event Action<Room, IReadOnlyList<Resource>> Consumed;
         public event Action<Room> StateChanged;
 

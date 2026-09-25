@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace View
@@ -45,10 +46,9 @@ namespace View
 
         private void OnDestroy()
         {
-            foreach (var view in _slots)
+            foreach (var view in _slots.Where(view => view))
             {
-                if (view)
-                    view.Clicked -= OnSlotClicked;
+                view.Clicked -= OnSlotClicked;
             }
         }
 

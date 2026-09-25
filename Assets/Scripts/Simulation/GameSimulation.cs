@@ -8,9 +8,7 @@ namespace Simulation
     public sealed class GameSimulation
     {
         public const double FixedStep = 0.1;
-
         private const int MaxStepsPerUpdate = 10;
-
         private const double TimeEpsilon = 1e-9;
 
         private readonly GameEconomy _economy;

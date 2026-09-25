@@ -24,7 +24,7 @@ namespace Economy
 
         public override string ToString()
         {
-            return Amount + " " + TypeEnum;
+            return $"{Amount} {TypeEnum}";
         }
 
         public static Resource[] Scale(IReadOnlyList<Resource> source, double multiplier)

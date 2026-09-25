@@ -18,41 +18,39 @@ namespace Core
         public RoomCatalog Catalog { get; private set; }
         public RateTracker Rates { get; private set; }
 
-        private GameModel() { }
-
-        public static GameModel CreateNew(GameSetup setup)
+        public GameModel(GameSetup setup)
         {
-            var model = CreateEmpty(setup);
-            model.Economy.Add(setup.StartingBalances);
-            return model;
+            if (setup == null) throw new ArgumentNullException(nameof(setup));
+
+            Setup = setup;
+            Catalog = new RoomCatalog(setup.Rooms);
+            Economy = new GameEconomy();
+            Laser = new LaserEnergy(setup.Laser);
+            Prison = new PrisonBlock(setup.SlotCount, Economy, Laser, setup.Laser);
+            Simulation = new GameSimulation(Economy, Laser, Prison);
+            Rates = new RateTracker(Prison, Simulation);
+
+            Economy.Add(setup.StartingBalances);
         }
 
-        public static GameModel FromSave(GameSetup setup, GameState state, out List<string> warnings)
+        public GameModel(GameSetup setup, GameState state, out List<string> warnings)
         {
-            var model = CreateEmpty(setup);
-            warnings = SaveMapper.Restore(state, model);
-            return model;
+            if (setup == null) throw new ArgumentNullException(nameof(setup));
+
+            Setup = setup;
+            Catalog = new RoomCatalog(setup.Rooms);
+            Economy = new GameEconomy();
+            Laser = new LaserEnergy(setup.Laser);
+            Prison = new PrisonBlock(setup.SlotCount, Economy, Laser, setup.Laser);
+            Simulation = new GameSimulation(Economy, Laser, Prison);
+            Rates = new RateTracker(Prison, Simulation);
+
+            warnings = SaveMapper.Restore(state, this);
         }
 
         public void Dispose()
         {
-            if (Rates != null)
-                Rates.Dispose();
-        }
-
-        private static GameModel CreateEmpty(GameSetup setup)
-        {
-            if (setup == null) throw new ArgumentNullException(nameof(setup));
-
-            var model = new GameModel();
-            model.Setup = setup;
-            model.Catalog = new RoomCatalog(setup.Rooms);
-            model.Economy = new GameEconomy();
-            model.Laser = new LaserEnergy(setup.Laser);
-            model.Prison = new PrisonBlock(setup.SlotCount, model.Economy, model.Laser, setup.Laser);
-            model.Simulation = new GameSimulation(model.Economy, model.Laser, model.Prison);
-            model.Rates = new RateTracker(model.Prison, model.Simulation);
-            return model;
+            Rates?.Dispose();
         }
     }
 }

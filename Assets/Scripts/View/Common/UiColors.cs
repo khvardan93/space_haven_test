@@ -10,6 +10,9 @@ namespace View
         public static readonly Color Laser = new Color(1f, 0.76f, 0.24f, 1f);      // #FFC23D, for text
         public static readonly Color LaserFill = new Color(0.88f, 0.54f, 0f, 1f);  // #E08A00, darker so white text stays readable on it
 
+        public const string MissingHex = "#FF5A5A";
+        public const string LaserHex = "#FFC23D";
+
         public static Color ForRate(double perSecond)
         {
             if (perSecond > 0.005) return Positive;

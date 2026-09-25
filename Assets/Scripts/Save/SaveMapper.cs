@@ -6,7 +6,6 @@ using Prison;
 
 namespace Save
 {
-    
     public static class SaveMapper
     {
         public static GameState Capture(GameModel model, DateTime nowUtc)

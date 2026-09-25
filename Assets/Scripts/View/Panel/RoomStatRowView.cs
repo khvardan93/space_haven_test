@@ -14,7 +14,7 @@ namespace SpacePrison.View
         [SerializeField] private TMP_Text _countLabel;
         [SerializeField] private TMP_Text _detailLabel;
 
-        private static readonly StringBuilder Builder = new StringBuilder(64);
+        private static readonly StringBuilder Builder = new(64);
 
         public RoomConfigs Spec { get; private set; }
 

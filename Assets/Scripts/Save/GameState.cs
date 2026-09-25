@@ -14,20 +14,6 @@ namespace Save
         public double LaserTimer;
         public long LastSaveUtcTicks;
 
-        public DateTime LastSaveUtc
-        {
-            get { return new DateTime(LastSaveUtcTicks, DateTimeKind.Utc); }
-        }
-    }
-
-    [Serializable]
-    public sealed class RoomState
-    {
-        public int Slot;
-        public string SpecId;
-        public int Level;
-        public double Progress;
-        public double BoostRemaining;
-        public double BoostMultiplier;
+        public DateTime LastSaveUtc => new(LastSaveUtcTicks, DateTimeKind.Utc);
     }
 }

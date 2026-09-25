@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Core
 {
-    
     public sealed class JsonSaveStorage
     {
         private readonly string _path;

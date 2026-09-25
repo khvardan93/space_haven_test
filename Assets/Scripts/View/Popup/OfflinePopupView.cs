@@ -15,7 +15,7 @@ namespace View
         [SerializeField] private TMP_Text _gainsLabel;
         [SerializeField] private Button _collectButton;
 
-        private static readonly StringBuilder Builder = new StringBuilder(128);
+        private static readonly StringBuilder Builder = new(128);
         private GameContext _context;
 
         public void Init(GameContext context)

@@ -4,10 +4,8 @@ using Configs;
 
 namespace Economy
 {
-    
     public sealed class GameEconomy
     {
-        
         private const double Epsilon = 1e-9;
 
         private readonly double[] _balances = new double[ResourceTypes.Count];

@@ -39,7 +39,6 @@ namespace Core
         private bool _paused;
 
         public GameContext Context => _context;
-
         public OfflineReport LastOfflineReport { get; private set; }
 
         public event Action<OfflineReport> OfflineEarningsApplied;
@@ -55,7 +54,7 @@ namespace Core
 
             if (_useSave && _storage.TryLoad(out var state))
             {
-                _model = GameModel.FromSave(setup, state, out var warnings);
+                _model = new GameModel(setup, state, out var warnings);
                 foreach (var warning in warnings)
                     Debug.LogWarning($"[Save] {warning}");
 
@@ -63,7 +62,7 @@ namespace Core
             }
             else
             {
-                _model = GameModel.CreateNew(setup);
+                _model = new GameModel(setup);
             }
 
             _context = new GameContext(_model, new ContentLookup(_config));
@@ -81,7 +80,6 @@ namespace Core
 
         private void Start()
         {
-            
             if (LastOfflineReport != null && LastOfflineReport.HasGains)
                 RaiseOfflineApplied(LastOfflineReport);
         }

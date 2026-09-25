@@ -9,9 +9,6 @@ namespace View
     
     public static class CostFormatter
     {
-        private const string MissingColor = "#FF5A5A";
-        private const string LaserColor = "#FFC23D";
-
         private static readonly StringBuilder Builder = new(64);
 
         public static string Cost(IReadOnlyList<Resource> cost, int laserCost, GameContext context)
@@ -24,7 +21,7 @@ namespace View
                 for (var i = 0; i < cost.Count; i++)
                 {
                     var affordable = economy.Get(cost[i].TypeEnum) + 1e-9 >= cost[i].Amount;
-                    AppendAmount(cost[i], context, affordable ? null : MissingColor);
+                    AppendAmount(cost[i], context, affordable ? null : UiColors.MissingHex);
                 }
             }
 
@@ -32,7 +29,7 @@ namespace View
             {
                 var affordable = context.Model.Laser.CanSpend(laserCost);
                 Separator();
-                Builder.Append("<color=").Append(affordable ? LaserColor : MissingColor).Append('>')
+                Builder.Append("<color=").Append(affordable ? UiColors.LaserHex : UiColors.MissingHex).Append('>')
                        .Append(laserCost).Append(' ').Append("LE").Append("</color>");
             }
 

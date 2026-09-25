@@ -3,7 +3,6 @@ using System.Globalization;
 
 namespace View
 {
-    
     public static class NumberFormat
     {
         private static readonly string[] Suffixes = { string.Empty, "K", "M", "B", "T", "Qa", "Qi" };
@@ -24,7 +23,7 @@ namespace View
                 tier++;
             }
 
-            string number;
+            var number = string.Empty;
             if (tier == 0)
                 number = value < 10 && value % 1 > 0.05 ? value.ToString("0.#", Culture) : Math.Floor(value).ToString("0", Culture);
             else if (value < 10)
@@ -34,7 +33,7 @@ namespace View
             else
                 number = value.ToString("0", Culture);
 
-            return (negative ? "-" : "") + number + Suffixes[tier];
+            return $"{(negative ? "-" : "")}{number}{Suffixes[tier]}";
         }
 
         public static string Rate(double perSecond)

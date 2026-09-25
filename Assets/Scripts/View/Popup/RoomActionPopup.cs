@@ -35,7 +35,7 @@ namespace View
         [SerializeField] private TMP_Text _boostButtonLabel;
         [SerializeField] private TMP_Text _boostCostLabel;
 
-        private readonly List<BuildOptionView> _options = new List<BuildOptionView>();
+        private readonly List<BuildOptionView> _options = new();
         private GameContext _context;
         private int _slot = -1;
         private bool _dirty;

@@ -6,8 +6,8 @@ namespace Prison
 {
     public sealed class RoomCatalog
     {
-        private readonly Dictionary<string, RoomConfigs> _byId = new ();
-        private readonly List<RoomConfigs> _all = new ();
+        private readonly Dictionary<string, RoomConfigs> _byId = new();
+        private readonly List<RoomConfigs> _all = new();
 
         public IReadOnlyList<RoomConfigs> All => _all;
         
@@ -21,22 +21,18 @@ namespace Prison
                 var errors = spec.Validate();
                 if (errors.Count > 0)
                     throw new ArgumentException($"Invalid room spec: {string.Join(" ", errors.ToArray())}");
-                if (_byId.ContainsKey(spec.Id))
+                if (!_byId.TryAdd(spec.Id, spec))
                     throw new ArgumentException($"Duplicate room id: {spec.Id}");
 
-                _byId.Add(spec.Id, spec);
                 _all.Add(spec);
             }
         }
 
         public bool TryGet(string id, out RoomConfigs spec)
         {
-            if (id == null)
-            {
-                spec = null;
-                return false;
-            }
-            return _byId.TryGetValue(id, out spec);
+            if (id != null) return _byId.TryGetValue(id, out spec);
+            spec = null;
+            return false;
         }
 
         public RoomConfigs Get(string id)

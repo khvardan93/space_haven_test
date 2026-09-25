@@ -25,8 +25,9 @@ namespace View
         [Header("Refresh")]
         [SerializeField, Range(1f, 30f)] private float _refreshPerSecond = 4f;
 
-        private readonly List<ResourceRowView> _resourceRows = new ();
-        private readonly List<RoomStatRowView> _roomRows = new ();
+        private readonly List<ResourceRowView> _resourceRows = new();
+        private readonly List<RoomStatRowView> _roomRows = new();
+        
         private GameContext _context;
         private float _timer;
 
